@@ -1,0 +1,49 @@
+INFO: 2026/02/10 23:41:59 logging.go:29: Server starting on :8080...
+INFO: 2026/02/10 23:49:26 logging.go:29: Server starting on :8080...
+INFO: 2026/02/10 23:51:59 logging.go:29: Server starting on :8080...
+INFO: 2026/02/10 23:52:26 logging.go:29: Started POST /login
+ERROR: 2026/02/10 23:52:26 logging.go:36: User not found or database error: record not found
+INFO: 2026/02/10 23:52:26 logging.go:29: Completed POST /login Status: Unauthorized Duration: 12.532666ms
+INFO: 2026/02/10 23:52:30 logging.go:29: Started POST /login
+ERROR: 2026/02/10 23:52:30 logging.go:36: User not found or database error: record not found
+INFO: 2026/02/10 23:52:30 logging.go:29: Completed POST /login Status: Unauthorized Duration: 3.213459ms
+INFO: 2026/02/10 23:52:57 logging.go:29: Started POST /signup
+INFO: 2026/02/10 23:52:57 logging.go:29: Completed POST /signup Status: OK Duration: 107.217958ms
+INFO: 2026/02/10 23:52:57 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:52:57 logging.go:29: Completed GET /registries Status: OK Duration: 10.315333ms
+INFO: 2026/02/10 23:52:57 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:52:57 logging.go:29: Completed GET /registries Status: OK Duration: 1.110041ms
+INFO: 2026/02/10 23:55:34 logging.go:29: Started POST /registries
+INFO: 2026/02/10 23:55:34 logging.go:29: Completed POST /registries Status: OK Duration: 31.718875ms
+INFO: 2026/02/10 23:55:35 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:55:35 logging.go:29: Completed GET /registries Status: OK Duration: 3.872417ms
+INFO: 2026/02/10 23:55:35 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:55:35 logging.go:29: Completed GET /registries Status: OK Duration: 5.738334ms
+INFO: 2026/02/10 23:55:38 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:55:38 logging.go:29: Completed GET /registries Status: OK Duration: 3.452916ms
+INFO: 2026/02/10 23:55:38 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:55:38 logging.go:29: Completed GET /registries Status: OK Duration: 2.369542ms
+INFO: 2026/02/10 23:55:40 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:55:40 logging.go:29: Completed GET /registries Status: OK Duration: 4.375125ms
+INFO: 2026/02/10 23:55:40 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:55:40 logging.go:29: Completed GET /registries Status: OK Duration: 2.56425ms
+INFO: 2026/02/10 23:56:29 logging.go:29: Started POST /prompts
+INFO: 2026/02/10 23:56:29 logging.go:29: Completed POST /prompts Status: Created Duration: 13.687125ms
+INFO: 2026/02/10 23:56:31 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:56:31 logging.go:29: Completed GET /registries Status: OK Duration: 2.704417ms
+INFO: 2026/02/10 23:56:31 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:56:31 logging.go:29: Completed GET /registries Status: OK Duration: 1.780584ms
+INFO: 2026/02/10 23:56:39 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:56:39 logging.go:29: Completed GET /registries Status: OK Duration: 9.630584ms
+INFO: 2026/02/10 23:56:39 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:56:39 logging.go:29: Completed GET /registries Status: OK Duration: 7.95825ms
+INFO: 2026/02/10 23:58:51 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:58:51 logging.go:29: Completed GET /registries Status: OK Duration: 100.987625ms
+INFO: 2026/02/10 23:58:51 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:58:51 logging.go:29: Completed GET /registries Status: OK Duration: 2.162041ms
+INFO: 2026/02/10 23:59:23 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:59:23 logging.go:29: Completed GET /registries Status: OK Duration: 51.614291ms
+INFO: 2026/02/10 23:59:23 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:59:23 logging.go:29: Completed GET /registries Status: OK Duration: 9.688667ms
+INFO: 2026/02/10 23:59:44 logging.go:29: Started GET /registries
+INFO: 2026/02/10 23:59:44 logging.go:29: Completed GET /registries Status: OK Duration: 8.609667ms

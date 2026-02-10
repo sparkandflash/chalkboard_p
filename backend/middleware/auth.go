@@ -1,22 +1,20 @@
 package middleware
 
 import (
-	"backend/database"
-	"backend/models"
+	"backend/utils"
 	"context"
-	"log"
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
-	"time"
 
-	"google.golang.org/api/idtoken"
-	"gorm.io/gorm"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type contextKey string
 
 const UserIDKey contextKey = "userId"
+const UserRoleKey contextKey = "userRole"
 
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -26,60 +24,40 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		token := strings.TrimPrefix(authHeader, "Bearer ")
-		if token == authHeader {
+		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+		if tokenString == authHeader {
 			http.Error(w, "Invalid token format", http.StatusUnauthorized)
 			return
 		}
 
-		clientID := os.Getenv("GOOGLE_CLIENT_ID")
-		// idtoken.Validate requires a context, we can use background or request context
-		// It creates a client, so ideally we shouldn't do this every request in prod for perf,
-		// but standard library verified client caches internally.
-		// For stricter environments we might create a validator instance.
-		payload, err := idtoken.Validate(context.Background(), token, clientID)
-		if err != nil {
-			http.Error(w, "Invalid token: "+err.Error(), http.StatusUnauthorized)
-			return
+		secret := os.Getenv("JWT_SECRET")
+		if secret == "" {
+			secret = "default_secret_change_me"
 		}
 
-		// Check expiry just in case
-		if payload.Expires < time.Now().Unix() {
-			http.Error(w, "Token expired", http.StatusUnauthorized)
-			return
-		}
-
-		googleID := payload.Subject
-		email, _ := payload.Claims["email"].(string)
-		name, _ := payload.Claims["name"].(string)
-		picture, _ := payload.Claims["picture"].(string)
-
-		var user models.User
-		// Find user by Google ID
-		result := database.DB.Where("google_id = ?", googleID).First(&user)
-		if result.Error != nil {
-			if result.Error == gorm.ErrRecordNotFound {
-				// Create new user
-				user = models.User{
-					GoogleID:  googleID,
-					Email:     email,
-					Name:      name,
-					AvatarURL: picture,
-				}
-				if createErr := database.DB.Create(&user).Error; createErr != nil {
-					log.Printf("Error creating user: %v", createErr)
-					http.Error(w, "Error creating user", http.StatusInternalServerError)
-					return
-				}
-			} else {
-				log.Printf("Error finding user: %v", result.Error)
-				http.Error(w, "Database error", http.StatusInternalServerError)
-				return
+		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 			}
+			return []byte(secret), nil
+		})
+
+		if err != nil {
+			utils.LogError("Token validation error", err)
+			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			return
 		}
 
-		// Store User ID (uint) in context
-		ctx := context.WithValue(r.Context(), UserIDKey, user.ID)
-		next.ServeHTTP(w, r.WithContext(ctx))
+		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+			userID := uint(claims["sub"].(float64)) // JWT numbers are float64
+			role := claims["role"].(string)
+
+			ctx := context.WithValue(r.Context(), UserIDKey, userID)
+			ctx = context.WithValue(ctx, UserRoleKey, role)
+
+			next.ServeHTTP(w, r.WithContext(ctx))
+		} else {
+			http.Error(w, "Invalid token claims", http.StatusUnauthorized)
+		}
 	})
 }

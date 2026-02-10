@@ -39,18 +39,19 @@ const Feed = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {prompts.map((prompt) => (
-                        <Card key={prompt.id} className="border bg-card text-card-foreground shadow-sm">
+                        <Card key={prompt.id} className="border bg-card p-6 text-card-foreground shadow-sm">
                             <CardHeader className="flex flex-row items-center gap-4 p-6 border-b bg-muted/20">
-                                <Avatar className="h-12 w-12 border-2 border-white shadow-sm">
+                               
+                              
+                                <div className="flex flex-col">
+                                    <h4 className="font-bold text-base text-foreground">{prompt.title}</h4>
+                                    <span className="text-sm text-muted-foreground">
+                                         <Avatar className="h-2 w-2 border-2 border-white shadow-sm">
                                     <AvatarImage src={prompt.user?.avatarUrl} />
                                     <AvatarFallback className="bg-primary text-primary-foreground font-bold text-lg">
                                         {prompt.user?.name?.[0] || 'U'}
                                     </AvatarFallback>
-                                </Avatar>
-                                <div className="flex flex-col">
-                                    <h4 className="font-bold text-base text-foreground">{prompt.title}</h4>
-                                    <span className="text-sm text-muted-foreground">
-                                        by {prompt.user?.name || 'Anonymous'}
+                                </Avatar>by {prompt.user?.name || 'Anonymous'}
                                     </span>
                                 </div>
                             </CardHeader>

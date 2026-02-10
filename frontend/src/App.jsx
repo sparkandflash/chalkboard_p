@@ -1,44 +1,51 @@
 import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
-import { GoogleLogin } from '@react-oauth/google'
-import { BrowserRouter as Router, Routes, Route, Link as RouterLink, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { BrowserRouter as Router, Routes, Route, Link as RouterLink, useNavigate, Navigate } from 'react-router-dom'
+import { ThemeProvider } from "@/components/theme-provider"
+import { ModeToggle } from "@/components/mode-toggle"
 
-import Feed from './pages/Feed'
+import Home from './pages/Home'
+import CreateRegistry from './pages/CreateRegistry'
+import RegistryDetail from './pages/RegistryDetail'
 import CreatePrompt from './pages/CreatePrompt'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
+
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem('auth_token');
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
 
 // Header Component
-const Header = ({ userEmail, setUserEmail }) => {
+const Header = () => {
   const navigate = useNavigate();
-
-  const handleLoginSuccess = async (credentialResponse) => {
-    try {
-      const { credential } = credentialResponse;
-      // Send the token to the backend to verify and get email
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-      const res = await axios.post(`${apiUrl}/login`, { token: credential });
-
-      const email = res.data.email;
-      setUserEmail(email);
-      // Store token for API requests
-      localStorage.setItem('google_id_token', credential);
-
-      console.log(`Welcome, ${email}!`);
-    } catch (error) {
-      console.error("Login failed", error);
-      alert("Login Failed");
-    }
-  };
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('auth_token'));
+  const userEmail = localStorage.getItem('user_email');
 
   const handleLogout = () => {
-    setUserEmail(null);
-    localStorage.removeItem('google_id_token');
-    navigate('/');
-    console.log("Logged out");
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user_email');
+    setIsLoggedIn(false);
+    navigate('/login');
   };
 
+  // Sync state with local storage (simple way)
+  useEffect(() => {
+    const checkAuth = () => {
+      setIsLoggedIn(!!localStorage.getItem('auth_token'));
+    };
+    window.addEventListener('storage', checkAuth); // Listen for changes
+    // Check on mount
+    checkAuth();
+    return () => window.removeEventListener('storage', checkAuth);
+  }, []);
+
   return (
-    <nav className="border-b bg-white shadow-sm sticky top-0 z-50">
+    <nav className="border-b bg-background shadow-sm sticky top-0 z-50">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           <RouterLink to="/" className="text-xl font-bold tracking-tight text-primary">
@@ -47,11 +54,15 @@ const Header = ({ userEmail, setUserEmail }) => {
         </div>
 
         <div className="flex items-center gap-4">
-          {userEmail ? (
+          <ModeToggle />
+          {isLoggedIn ? (
             <>
-              <Button asChild variant="default" className="font-medium">
-                <RouterLink to="/create">
-                  Create Prompt
+              <span className="text-sm text-muted-foreground hidden sm:inline-block">
+                {userEmail}
+              </span>
+              <Button asChild variant="ghost" className="font-medium">
+                <RouterLink to="/">
+                  My Registries
                 </RouterLink>
               </Button>
               <Button onClick={handleLogout} variant="destructive" size="sm">
@@ -59,10 +70,14 @@ const Header = ({ userEmail, setUserEmail }) => {
               </Button>
             </>
           ) : (
-            <GoogleLogin
-              onSuccess={handleLoginSuccess}
-              onError={() => console.log('Login Failed')}
-            />
+            <>
+              <Button asChild variant="ghost">
+                <RouterLink to="/login">Login</RouterLink>
+              </Button>
+              <Button asChild>
+                <RouterLink to="/signup">Sign Up</RouterLink>
+              </Button>
+            </>
           )}
         </div>
       </div>
@@ -70,29 +85,45 @@ const Header = ({ userEmail, setUserEmail }) => {
   );
 };
 
+import { Toaster } from "@/components/ui/sonner"
+
 function App() {
-  const [userEmail, setUserEmail] = useState(null);
-
-  // Check for existing session
-  useEffect(() => {
-    const token = localStorage.getItem('google_id_token');
-    if (token) {
-      // Optimistically set user as logged in
-    }
-  }, []);
-
   return (
-    <Router>
-      <div className="min-h-screen bg-secondary/30 pb-20"> {/* Light grey background wrapper */}
-        <Header userEmail={userEmail} setUserEmail={setUserEmail} />
-        <div className="container py-10"> {/* More top padding */}
-          <Routes>
-            <Route path="/" element={<Feed />} />
-            <Route path="/create" element={<CreatePrompt />} />
-          </Routes>
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <Router>
+        <div className="min-h-screen bg-background pb-20 transition-colors duration-300">
+          <Header />
+          <div className="container py-10">
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+
+              <Route path="/" element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              } />
+              <Route path="/create-registry" element={
+                <ProtectedRoute>
+                  <CreateRegistry />
+                </ProtectedRoute>
+              } />
+              <Route path="/registry/:id" element={
+                <ProtectedRoute>
+                  <RegistryDetail />
+                </ProtectedRoute>
+              } />
+              <Route path="/create-prompt" element={
+                <ProtectedRoute>
+                  <CreatePrompt />
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </div>
+          <Toaster />
         </div>
-      </div>
-    </Router>
+      </Router>
+    </ThemeProvider>
   )
 }
 
