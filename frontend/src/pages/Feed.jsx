@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-    Container,
-    Row,
-    Col,
-    Card,
-    Badge,
-    Spinner,
-    Image,
-    Stack
-} from 'react-bootstrap';
+import { Card, CardHeader, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import api from '../api';
 
 const Feed = () => {
@@ -32,72 +25,55 @@ const Feed = () => {
 
     if (isLoading) {
         return (
-            <Container className="d-flex justify-content-center py-5">
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
-            </Container>
+            <div className="flex justify-center items-center py-20">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            </div>
         );
     }
 
     return (
-        <Container className="py-4">
-            <h2 className="mb-4">Global Prompts</h2>
+        <div className="space-y-6">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground">Global Prompts</h2>
             {prompts.length === 0 ? (
-                <p>No prompts found. Be the first to create one!</p>
+                <p className="text-muted-foreground text-lg">No prompts found. Be the first to create one!</p>
             ) : (
-                <Row className="g-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {prompts.map((prompt) => (
-                        <Col key={prompt.id} md={6} lg={4}>
-                            <Card className="h-100 shadow-sm transition-all">
-                                <Card.Header className="bg-white border-bottom-0 pt-3">
-                                    <div className="d-flex align-items-center gap-3">
-                                        <Image
-                                            src={prompt.user?.avatarUrl}
-                                            roundedCircle
-                                            width={40}
-                                            height={40}
-                                            alt={prompt.user?.name || 'User'}
-                                            className="bg-secondary"
-                                        />
-                                        <div>
-                                            <h6 className="mb-0">{prompt.title}</h6>
-                                            <small className="text-muted">
-                                                by {prompt.user?.name || 'Anonymous'}
-                                            </small>
-                                        </div>
-                                    </div>
-                                </Card.Header>
-                                <Card.Body>
-                                    <Stack gap={3}>
-                                        <div>
-                                            <h6 className="text-uppercase text-muted small mb-2">Description</h6>
-                                            <Card.Text className="small" style={{
-                                                display: '-webkit-box',
-                                                WebkitLineClamp: 3,
-                                                WebkitBoxOrient: 'vertical',
-                                                overflow: 'hidden'
-                                            }}>
-                                                {prompt.description}
-                                            </Card.Text>
-                                        </div>
-                                        <div>
-                                            <div className="d-flex gap-2 flex-wrap">
-                                                {prompt.tags && prompt.tags.split(',').map((tag, index) => (
-                                                    <Badge key={index} bg="success" pill>
-                                                        {tag.trim()}
-                                                    </Badge>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </Stack>
-                                </Card.Body>
-                            </Card>
-                        </Col>
+                        <Card key={prompt.id} className="border bg-card text-card-foreground shadow-sm">
+                            <CardHeader className="flex flex-row items-center gap-4 p-6 border-b bg-muted/20">
+                                <Avatar className="h-12 w-12 border-2 border-white shadow-sm">
+                                    <AvatarImage src={prompt.user?.avatarUrl} />
+                                    <AvatarFallback className="bg-primary text-primary-foreground font-bold text-lg">
+                                        {prompt.user?.name?.[0] || 'U'}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <div className="flex flex-col">
+                                    <h4 className="font-bold text-base text-foreground">{prompt.title}</h4>
+                                    <span className="text-sm text-muted-foreground">
+                                        by {prompt.user?.name || 'Anonymous'}
+                                    </span>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="p-6 space-y-4">
+                                <div>
+                                    <h5 className="text-xs font-bold text-muted-foreground uppercase mb-2 tracking-wider">Description</h5>
+                                    <p className="text-base text-foreground/90 line-clamp-3 leading-relaxed">
+                                        {prompt.description}
+                                    </p>
+                                </div>
+                                <div className="flex flex-wrap gap-2 pt-2">
+                                    {prompt.tags && prompt.tags.split(',').map((tag, index) => (
+                                        <Badge key={index} variant="secondary" className="px-3 py-1 text-sm font-medium rounded-pill bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                            {tag.trim()}
+                                        </Badge>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
                     ))}
-                </Row>
+                </div>
             )}
-        </Container>
+        </div>
     );
 };
 

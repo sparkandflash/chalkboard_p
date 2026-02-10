@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Container, Navbar, Nav, Button } from 'react-bootstrap'
+import { Button } from "@/components/ui/button"
 import { GoogleLogin } from '@react-oauth/google'
 import { BrowserRouter as Router, Routes, Route, Link as RouterLink, useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -38,33 +38,35 @@ const Header = ({ userEmail, setUserEmail }) => {
   };
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
-      <Container>
-        <Navbar.Brand as={RouterLink} to="/">GlobalPrompts</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+    <nav className="border-b bg-white shadow-sm sticky top-0 z-50">
+      <div className="container flex h-16 items-center justify-between">
+        <div className="flex items-center gap-6">
+          <RouterLink to="/" className="text-xl font-bold tracking-tight text-primary">
+            GlobalPrompts
+          </RouterLink>
+        </div>
+
+        <div className="flex items-center gap-4">
           {userEmail ? (
-            <Nav className="align-items-center gap-3">
-              <Button as={RouterLink} to="/create" variant="outline-success">
-                Create Prompt
+            <>
+              <Button asChild variant="default" className="font-medium">
+                <RouterLink to="/create">
+                  Create Prompt
+                </RouterLink>
               </Button>
-              <Button onClick={handleLogout} variant="danger" size="sm">
+              <Button onClick={handleLogout} variant="destructive" size="sm">
                 Logout
               </Button>
-            </Nav>
+            </>
           ) : (
-            <div className="bg-white rounded p-1">
-              <GoogleLogin
-                onSuccess={handleLoginSuccess}
-                onError={() => console.log('Login Failed')}
-                shape="pill"
-                size="medium"
-              />
-            </div>
+            <GoogleLogin
+              onSuccess={handleLoginSuccess}
+              onError={() => console.log('Login Failed')}
+            />
           )}
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+        </div>
+      </div>
+    </nav>
   );
 };
 
@@ -76,21 +78,19 @@ function App() {
     const token = localStorage.getItem('google_id_token');
     if (token) {
       // Optimistically set user as logged in
-      // For this v1, checking token existence is enough for UI toggle
     }
   }, []);
 
-
   return (
     <Router>
-      <div className="min-vh-100 bg-light">
+      <div className="min-h-screen bg-secondary/30 pb-20"> {/* Light grey background wrapper */}
         <Header userEmail={userEmail} setUserEmail={setUserEmail} />
-        <Container>
+        <div className="container py-10"> {/* More top padding */}
           <Routes>
             <Route path="/" element={<Feed />} />
             <Route path="/create" element={<CreatePrompt />} />
           </Routes>
-        </Container>
+        </div>
       </div>
     </Router>
   )
