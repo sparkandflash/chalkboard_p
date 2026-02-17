@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button" // Button might still be needed if used elsewhere, but checking App.jsx content... actually it was only used in Header. 
 import { BrowserRouter as Router, Routes, Route, Link as RouterLink, useNavigate, Navigate } from 'react-router-dom'
 import { ThemeProvider } from "@/components/theme-provider"
-import { ModeToggle } from "@/components/mode-toggle"
+// ModeToggle is used in Header, so not needed here
+
 
 import Home from './pages/Home'
 import CreateRegistry from './pages/CreateRegistry'
@@ -20,80 +20,17 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-// Header Component
-const Header = () => {
-  const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('auth_token'));
-  const userEmail = localStorage.getItem('user_email');
-
-  const handleLogout = () => {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_email');
-    setIsLoggedIn(false);
-    navigate('/login');
-  };
-
-  // Sync state with local storage (simple way)
-  useEffect(() => {
-    const checkAuth = () => {
-      setIsLoggedIn(!!localStorage.getItem('auth_token'));
-    };
-    window.addEventListener('storage', checkAuth); // Listen for changes
-    // Check on mount
-    checkAuth();
-    return () => window.removeEventListener('storage', checkAuth);
-  }, []);
-
-  return (
-    <nav className="border-b bg-background shadow-sm sticky top-0 z-50">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-6">
-          <RouterLink to="/" className="text-xl font-bold tracking-tight text-primary">
-            GlobalPrompts
-          </RouterLink>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <ModeToggle />
-          {isLoggedIn ? (
-            <>
-              <span className="text-sm text-muted-foreground hidden sm:inline-block">
-                {userEmail}
-              </span>
-              <Button asChild variant="ghost" className="font-medium">
-                <RouterLink to="/">
-                  My Registries
-                </RouterLink>
-              </Button>
-              <Button onClick={handleLogout} variant="destructive" size="sm">
-                Logout
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button asChild variant="ghost">
-                <RouterLink to="/login">Login</RouterLink>
-              </Button>
-              <Button asChild>
-                <RouterLink to="/signup">Sign Up</RouterLink>
-              </Button>
-            </>
-          )}
-        </div>
-      </div>
-    </nav>
-  );
-};
-
+import { Header } from "@/components/layout/Header"
+import { Footer } from "@/components/layout/Footer"
 import { Toaster } from "@/components/ui/sonner"
 
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <Router>
-        <div className="min-h-screen bg-background pb-20 transition-colors duration-300">
+        <div className="min-h-screen flex flex-col bg-background transition-colors duration-300">
           <Header />
-          <div className="container py-10">
+          <div className="container py-10 flex-1">
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
@@ -120,6 +57,7 @@ function App() {
               } />
             </Routes>
           </div>
+          <Footer />
           <Toaster />
         </div>
       </Router>

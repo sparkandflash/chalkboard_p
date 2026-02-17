@@ -113,7 +113,7 @@ func generateJWT(user models.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub":  user.ID,
 		"role": user.Role,
-		"exp":  time.Now().Add(time.Hour * 24 * 7).Unix(), // 7 days
+		"exp":  time.Now().Add(time.Hour * 24 * 30).Unix(), // 30 days
 	})
 
 	return token.SignedString([]byte(secret))

@@ -3,22 +3,21 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "@/components/ui/card"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api';
+
+import { toast } from "sonner"
 
 const Signup = ({ onSuccess }) => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        setError(null);
 
         try {
             const res = await api.post('/signup', { username, email, password });
@@ -27,11 +26,12 @@ const Signup = ({ onSuccess }) => {
             localStorage.setItem('auth_token', token);
             localStorage.setItem('user_email', user.email);
 
+            toast.success("Account created successfully!");
             if (onSuccess) onSuccess(user.email);
             navigate('/');
         } catch (error) {
             console.error(error);
-            setError(error.response?.data?.message || 'Error creating account');
+            toast.error(error.response?.data?.message || 'Error creating account');
         } finally {
             setIsLoading(false);
         }
@@ -44,12 +44,6 @@ const Signup = ({ onSuccess }) => {
                     <CardTitle className="text-2xl text-center">Sign Up</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {error && (
-                        <Alert variant="destructive" className="mb-4">
-                            <AlertTitle>Error</AlertTitle>
-                            <AlertDescription>{error}</AlertDescription>
-                        </Alert>
-                    )}
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="username">Username</Label>
@@ -81,7 +75,7 @@ const Signup = ({ onSuccess }) => {
                                 required
                             />
                         </div>
-                        <Button type="submit" className="w-full" disabled={isLoading}>
+                        <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
                             {isLoading ? 'Signing up...' : 'Sign Up'}
                         </Button>
                     </form>

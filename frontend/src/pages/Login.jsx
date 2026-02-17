@@ -63,7 +63,7 @@ const Login = ({ onSuccess }) => {
                                 required
                             />
                         </div>
-                        <Button type="submit" className="w-full" disabled={isLoading}>
+                        <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
                             {isLoading ? 'Logging in...' : 'Login'}
                         </Button>
                     </form>
