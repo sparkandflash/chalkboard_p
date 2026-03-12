@@ -31,7 +31,7 @@ export const Header = () => {
             {/* Row 1: Centered Logo */}
             <div className="flex items-center justify-center px-6 md:px-10 pt-4 pb-1">
                 <RouterLink to="/" className="text-2xl font-extrabold tracking-tight text-foreground">
-                    ProductName
+                    The whiteBoard
                 </RouterLink>
             </div>
 
