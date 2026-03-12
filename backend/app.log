@@ -365,3 +365,365 @@ INFO: 2026/02/11 02:29:12 logging.go:29: Started GET /registries
 INFO: 2026/02/11 02:29:12 logging.go:29: Completed GET /registries Status: OK Duration: 2.558459ms
 INFO: 2026/02/11 02:29:12 logging.go:29: Started GET /registries
 INFO: 2026/02/11 02:29:12 logging.go:29: Completed GET /registries Status: OK Duration: 1.144416ms
+INFO: 2026/03/12 20:53:04 logging.go:29: Server starting on :8080...
+INFO: 2026/03/12 20:54:08 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 20:54:08 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 20:54:08 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 4.91975ms
+INFO: 2026/03/12 20:54:08 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 20:54:08 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 20:54:08 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 193.292µs
+INFO: 2026/03/12 20:54:30 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 20:54:30 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 20:54:30 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 717.542µs
+INFO: 2026/03/12 20:54:30 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 20:54:30 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 20:54:30 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 230.5µs
+INFO: 2026/03/12 20:54:38 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 20:54:38 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 20:54:38 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 346.708µs
+INFO: 2026/03/12 20:54:38 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 20:54:38 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 20:54:38 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 101.416µs
+INFO: 2026/03/12 20:54:49 logging.go:29: Started POST /registries
+ERROR: 2026/03/12 20:54:49 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 20:54:49 logging.go:29: Completed POST /registries Status: Unauthorized Duration: 402.5µs
+INFO: 2026/03/12 20:55:11 logging.go:29: Started POST /login
+INFO: 2026/03/12 20:55:12 logging.go:29: Completed POST /login Status: OK Duration: 101.715ms
+INFO: 2026/03/12 20:55:12 logging.go:29: Started GET /registries
+INFO: 2026/03/12 20:55:12 logging.go:29: Completed GET /registries Status: OK Duration: 6.91575ms
+INFO: 2026/03/12 20:55:12 logging.go:29: Started GET /registries
+INFO: 2026/03/12 20:55:12 logging.go:29: Completed GET /registries Status: OK Duration: 5.521833ms
+INFO: 2026/03/12 20:55:17 logging.go:29: Started GET /registries
+INFO: 2026/03/12 20:55:17 logging.go:29: Completed GET /registries Status: OK Duration: 12.851708ms
+INFO: 2026/03/12 20:55:17 logging.go:29: Started GET /registries
+INFO: 2026/03/12 20:55:17 logging.go:29: Completed GET /registries Status: OK Duration: 7.536583ms
+INFO: 2026/03/12 20:55:26 logging.go:29: Started GET /registries
+INFO: 2026/03/12 20:55:26 logging.go:29: Completed GET /registries Status: OK Duration: 12.769542ms
+INFO: 2026/03/12 20:55:26 logging.go:29: Started GET /registries
+INFO: 2026/03/12 20:55:26 logging.go:29: Completed GET /registries Status: OK Duration: 2.843417ms
+INFO: 2026/03/12 21:13:33 logging.go:29: Started GET /registries
+INFO: 2026/03/12 21:13:33 logging.go:29: Completed GET /registries Status: OK Duration: 32.820292ms
+INFO: 2026/03/12 21:13:33 logging.go:29: Started GET /registries
+INFO: 2026/03/12 21:13:33 logging.go:29: Completed GET /registries Status: OK Duration: 2.028583ms
+INFO: 2026/03/12 21:30:40 logging.go:29: Started GET /registries
+INFO: 2026/03/12 21:30:40 logging.go:29: Completed GET /registries Status: OK Duration: 32.992084ms
+INFO: 2026/03/12 21:30:40 logging.go:29: Started GET /registries
+INFO: 2026/03/12 21:30:40 logging.go:29: Completed GET /registries Status: OK Duration: 1.692959ms
+INFO: 2026/03/12 21:30:57 logging.go:29: Started GET /registries
+INFO: 2026/03/12 21:30:57 logging.go:29: Completed GET /registries Status: OK Duration: 12.551209ms
+INFO: 2026/03/12 21:30:57 logging.go:29: Started GET /registries
+INFO: 2026/03/12 21:30:57 logging.go:29: Completed GET /registries Status: OK Duration: 4.037083ms
+INFO: 2026/03/12 21:31:07 logging.go:29: Started GET /registries
+INFO: 2026/03/12 21:31:07 logging.go:29: Completed GET /registries Status: OK Duration: 5.228166ms
+INFO: 2026/03/12 21:31:07 logging.go:29: Started GET /registries
+INFO: 2026/03/12 21:31:07 logging.go:29: Completed GET /registries Status: OK Duration: 2.798125ms
+INFO: 2026/03/12 21:31:20 logging.go:29: Started GET /registries
+INFO: 2026/03/12 21:31:20 logging.go:29: Completed GET /registries Status: OK Duration: 8.852542ms
+INFO: 2026/03/12 21:31:20 logging.go:29: Started GET /registries
+INFO: 2026/03/12 21:31:20 logging.go:29: Completed GET /registries Status: OK Duration: 4.364459ms
+INFO: 2026/03/12 22:01:49 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:01:49 logging.go:29: Completed GET /registries Status: OK Duration: 34.2445ms
+INFO: 2026/03/12 22:01:49 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:01:49 logging.go:29: Completed GET /registries Status: OK Duration: 2.199167ms
+INFO: 2026/03/12 22:18:50 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:18:50 logging.go:29: Completed GET /registries Status: OK Duration: 33.900291ms
+INFO: 2026/03/12 22:19:16 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:19:16 logging.go:29: Completed GET /registries Status: OK Duration: 9.126584ms
+INFO: 2026/03/12 22:19:16 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:19:16 logging.go:29: Completed GET /registries Status: OK Duration: 3.156916ms
+INFO: 2026/03/12 22:20:01 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:20:01 logging.go:29: Completed GET /registries Status: OK Duration: 8.523708ms
+INFO: 2026/03/12 22:20:01 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:20:01 logging.go:29: Completed GET /registries Status: OK Duration: 3.243375ms
+INFO: 2026/03/12 22:20:07 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:20:07 logging.go:29: Completed GET /registries Status: OK Duration: 3.6925ms
+INFO: 2026/03/12 22:20:07 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:20:07 logging.go:29: Completed GET /registries Status: OK Duration: 2.43525ms
+INFO: 2026/03/12 22:20:17 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:20:17 logging.go:29: Completed GET /registries Status: OK Duration: 8.491333ms
+INFO: 2026/03/12 22:20:17 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:20:17 logging.go:29: Completed GET /registries Status: OK Duration: 4.082334ms
+INFO: 2026/03/12 22:20:21 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:20:21 logging.go:29: Completed GET /registries Status: OK Duration: 19.96075ms
+INFO: 2026/03/12 22:20:21 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:20:21 logging.go:29: Completed GET /registries Status: OK Duration: 1.403125ms
+INFO: 2026/03/12 22:20:22 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:20:22 logging.go:29: Completed GET /registries Status: OK Duration: 8.0995ms
+INFO: 2026/03/12 22:20:22 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:20:22 logging.go:29: Completed GET /registries Status: OK Duration: 8.445291ms
+INFO: 2026/03/12 22:21:34 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:21:34 logging.go:29: Completed GET /registries Status: OK Duration: 11.196417ms
+INFO: 2026/03/12 22:21:34 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:21:34 logging.go:29: Completed GET /registries Status: OK Duration: 1.980958ms
+INFO: 2026/03/12 22:37:16 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:37:16 logging.go:29: Completed GET /registries Status: OK Duration: 32.528459ms
+INFO: 2026/03/12 22:37:16 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:37:16 logging.go:29: Completed GET /registries Status: OK Duration: 2.455125ms
+INFO: 2026/03/12 22:41:23 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:41:23 logging.go:29: Completed GET /registries Status: OK Duration: 26.643084ms
+INFO: 2026/03/12 22:41:23 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:41:23 logging.go:29: Completed GET /registries Status: OK Duration: 1.320916ms
+INFO: 2026/03/12 22:47:00 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:47:00 logging.go:29: Completed GET /registries Status: OK Duration: 25.597292ms
+INFO: 2026/03/12 22:47:00 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:47:00 logging.go:29: Completed GET /registries Status: OK Duration: 2.72325ms
+INFO: 2026/03/12 22:51:39 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:51:39 logging.go:29: Completed GET /registries Status: OK Duration: 31.986917ms
+INFO: 2026/03/12 22:51:39 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:51:39 logging.go:29: Completed GET /registries Status: OK Duration: 4.721916ms
+INFO: 2026/03/12 22:52:33 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 22:52:33 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 22:52:33 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 6.09825ms
+INFO: 2026/03/12 22:52:33 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 22:52:33 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 22:52:33 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 141.916µs
+INFO: 2026/03/12 22:53:03 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 22:53:03 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 22:53:03 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 485.917µs
+INFO: 2026/03/12 22:53:03 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 22:53:03 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 22:53:03 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 105.625µs
+INFO: 2026/03/12 22:57:16 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:57:16 logging.go:29: Completed GET /registries Status: OK Duration: 30.803042ms
+INFO: 2026/03/12 22:57:16 logging.go:29: Started GET /registries
+INFO: 2026/03/12 22:57:16 logging.go:29: Completed GET /registries Status: OK Duration: 2.488916ms
+INFO: 2026/03/12 22:57:22 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 22:57:22 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 22:57:22 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 582.333µs
+INFO: 2026/03/12 22:57:22 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 22:57:22 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 22:57:22 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 58.375µs
+INFO: 2026/03/12 23:04:35 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:04:35 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:04:35 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 4.647583ms
+INFO: 2026/03/12 23:04:35 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:04:35 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:04:35 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 181.417µs
+INFO: 2026/03/12 23:33:53 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:33:53 logging.go:29: Completed GET /registries Status: OK Duration: 26.199417ms
+INFO: 2026/03/12 23:33:53 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:33:53 logging.go:29: Completed GET /registries Status: OK Duration: 1.793791ms
+INFO: 2026/03/12 23:34:29 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:34:29 logging.go:29: Completed GET /registries Status: OK Duration: 7.453459ms
+INFO: 2026/03/12 23:34:29 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:34:29 logging.go:29: Completed GET /registries Status: OK Duration: 2.8695ms
+INFO: 2026/03/12 23:34:40 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:34:40 logging.go:29: Completed GET /registries Status: OK Duration: 6.38775ms
+INFO: 2026/03/12 23:34:40 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:34:40 logging.go:29: Completed GET /registries Status: OK Duration: 6.066709ms
+INFO: 2026/03/12 23:41:28 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:41:28 logging.go:29: Completed GET /registries Status: OK Duration: 18.558542ms
+INFO: 2026/03/12 23:41:28 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:41:28 logging.go:29: Completed GET /registries Status: OK Duration: 1.585458ms
+INFO: 2026/03/12 23:42:13 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:42:13 logging.go:29: Completed GET /registries Status: OK Duration: 6.594792ms
+INFO: 2026/03/12 23:42:13 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:42:13 logging.go:29: Completed GET /registries Status: OK Duration: 2.218708ms
+INFO: 2026/03/12 23:45:44 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:45:44 logging.go:29: Completed GET /registries Status: OK Duration: 16.107375ms
+INFO: 2026/03/12 23:45:44 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:45:44 logging.go:29: Completed GET /registries Status: OK Duration: 4.966042ms
+INFO: 2026/03/12 23:45:56 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:45:56 logging.go:29: Completed GET /registries Status: OK Duration: 6.461125ms
+INFO: 2026/03/12 23:45:56 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:45:56 logging.go:29: Completed GET /registries Status: OK Duration: 3.786083ms
+INFO: 2026/03/12 23:46:00 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:46:00 logging.go:29: Completed GET /registries Status: OK Duration: 4.7815ms
+INFO: 2026/03/12 23:46:00 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:46:00 logging.go:29: Completed GET /registries Status: OK Duration: 4.226542ms
+INFO: 2026/03/12 23:47:17 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:47:17 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:47:17 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:47:17 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 75.5µs
+INFO: 2026/03/12 23:47:17 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:47:17 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:47:17 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 100.708µs
+INFO: 2026/03/12 23:47:17 logging.go:29: Completed GET /registries Status: OK Duration: 8.102417ms
+INFO: 2026/03/12 23:47:29 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:47:29 logging.go:29: Completed GET /registries Status: OK Duration: 4.295917ms
+INFO: 2026/03/12 23:47:29 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:47:29 logging.go:29: Completed GET /registries Status: OK Duration: 5.011292ms
+INFO: 2026/03/12 23:47:30 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:47:30 logging.go:29: Completed GET /registries Status: OK Duration: 2.533542ms
+INFO: 2026/03/12 23:47:30 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:47:30 logging.go:29: Completed GET /registries Status: OK Duration: 1.642667ms
+INFO: 2026/03/12 23:47:36 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:47:36 logging.go:29: Completed GET /registries Status: OK Duration: 3.153709ms
+INFO: 2026/03/12 23:47:36 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:47:36 logging.go:29: Completed GET /registries Status: OK Duration: 2.618333ms
+INFO: 2026/03/12 23:52:53 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:52:53 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:52:53 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 844.459µs
+INFO: 2026/03/12 23:52:53 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:52:53 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:52:53 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:52:53 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 941.542µs
+INFO: 2026/03/12 23:52:53 logging.go:29: Completed GET /registries Status: OK Duration: 10.65625ms
+INFO: 2026/03/12 23:54:33 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:54:33 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:54:33 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:54:33 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 1.969375ms
+INFO: 2026/03/12 23:54:33 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:54:33 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:54:33 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 212.334µs
+INFO: 2026/03/12 23:54:33 logging.go:29: Completed GET /registries Status: OK Duration: 12.812375ms
+INFO: 2026/03/12 23:55:03 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:55:03 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:55:03 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 187.042µs
+INFO: 2026/03/12 23:55:03 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:55:03 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:55:03 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:55:03 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 28.375µs
+INFO: 2026/03/12 23:55:03 logging.go:29: Completed GET /registries Status: OK Duration: 9.260792ms
+INFO: 2026/03/12 23:55:06 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:55:06 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:55:06 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 121.542µs
+INFO: 2026/03/12 23:55:06 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:55:06 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:55:06 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:55:06 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 40.417µs
+INFO: 2026/03/12 23:55:06 logging.go:29: Completed GET /registries Status: OK Duration: 2.324208ms
+INFO: 2026/03/12 23:55:21 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:55:21 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:55:21 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:55:21 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 1.313959ms
+INFO: 2026/03/12 23:55:21 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:55:21 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:55:21 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 57.5µs
+INFO: 2026/03/12 23:55:21 logging.go:29: Completed GET /registries Status: OK Duration: 144.472459ms
+INFO: 2026/03/12 23:56:27 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:56:27 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:56:27 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:56:27 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 133.625µs
+INFO: 2026/03/12 23:56:27 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:56:27 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:56:27 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 51.667µs
+INFO: 2026/03/12 23:56:27 logging.go:29: Completed GET /registries Status: OK Duration: 14.714708ms
+INFO: 2026/03/12 23:57:54 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:57:54 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:57:54 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 1.006375ms
+INFO: 2026/03/12 23:57:54 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:57:54 logging.go:29: Started GET /registries
+ERROR: 2026/03/12 23:57:54 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/12 23:57:54 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 95.083µs
+INFO: 2026/03/12 23:57:54 logging.go:29: Completed GET /registries Status: OK Duration: 11.029041ms
+INFO: 2026/03/12 23:58:08 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:08 logging.go:29: Completed GET /registries Status: OK Duration: 8.643084ms
+INFO: 2026/03/12 23:58:08 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:08 logging.go:29: Completed GET /registries Status: OK Duration: 4.531667ms
+INFO: 2026/03/12 23:58:13 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:13 logging.go:29: Completed GET /registries Status: OK Duration: 4.995792ms
+INFO: 2026/03/12 23:58:13 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:13 logging.go:29: Completed GET /registries Status: OK Duration: 3.107167ms
+INFO: 2026/03/12 23:58:21 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:21 logging.go:29: Completed GET /registries Status: OK Duration: 4.587125ms
+INFO: 2026/03/12 23:58:21 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:21 logging.go:29: Completed GET /registries Status: OK Duration: 2.975167ms
+INFO: 2026/03/12 23:58:24 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:24 logging.go:29: Completed GET /registries Status: OK Duration: 4.375084ms
+INFO: 2026/03/12 23:58:24 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:24 logging.go:29: Completed GET /registries Status: OK Duration: 3.467125ms
+INFO: 2026/03/12 23:58:42 logging.go:29: Started POST /login
+INFO: 2026/03/12 23:58:42 logging.go:29: Completed POST /login Status: OK Duration: 80.391ms
+INFO: 2026/03/12 23:58:42 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:42 logging.go:29: Completed GET /registries Status: OK Duration: 3.372458ms
+INFO: 2026/03/12 23:58:42 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:42 logging.go:29: Completed GET /registries Status: OK Duration: 4.4115ms
+INFO: 2026/03/12 23:58:46 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:46 logging.go:29: Completed GET /registries Status: OK Duration: 7.486417ms
+INFO: 2026/03/12 23:58:46 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:46 logging.go:29: Completed GET /registries Status: OK Duration: 3.989083ms
+INFO: 2026/03/12 23:58:48 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:48 logging.go:29: Completed GET /registries Status: OK Duration: 2.814542ms
+INFO: 2026/03/12 23:58:48 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:48 logging.go:29: Completed GET /registries Status: OK Duration: 2.254416ms
+INFO: 2026/03/12 23:58:49 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:49 logging.go:29: Completed GET /registries Status: OK Duration: 4.401334ms
+INFO: 2026/03/12 23:58:49 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:49 logging.go:29: Completed GET /registries Status: OK Duration: 4.8155ms
+INFO: 2026/03/12 23:58:51 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:51 logging.go:29: Completed GET /registries Status: OK Duration: 5.476917ms
+INFO: 2026/03/12 23:58:51 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:51 logging.go:29: Completed GET /registries Status: OK Duration: 5.914292ms
+INFO: 2026/03/12 23:58:52 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:52 logging.go:29: Completed GET /registries Status: OK Duration: 7.991625ms
+INFO: 2026/03/12 23:58:52 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:52 logging.go:29: Completed GET /registries Status: OK Duration: 5.739541ms
+INFO: 2026/03/12 23:58:55 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:55 logging.go:29: Completed GET /registries Status: OK Duration: 2.891334ms
+INFO: 2026/03/12 23:58:55 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:55 logging.go:29: Completed GET /registries Status: OK Duration: 2.760042ms
+INFO: 2026/03/12 23:58:56 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:56 logging.go:29: Completed GET /registries Status: OK Duration: 5.334416ms
+INFO: 2026/03/12 23:58:56 logging.go:29: Started GET /registries
+INFO: 2026/03/12 23:58:56 logging.go:29: Completed GET /registries Status: OK Duration: 3.017625ms
+INFO: 2026/03/13 00:00:07 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:00:07 logging.go:29: Started GET /registries
+ERROR: 2026/03/13 00:00:07 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/13 00:00:07 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 157.458µs
+INFO: 2026/03/13 00:00:07 logging.go:29: Started GET /registries
+ERROR: 2026/03/13 00:00:07 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/13 00:00:07 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 92.375µs
+INFO: 2026/03/13 00:00:07 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:00:07 logging.go:29: Completed GET /registries Status: OK Duration: 18.853791ms
+INFO: 2026/03/13 00:00:07 logging.go:29: Completed GET /registries Status: OK Duration: 50.353292ms
+INFO: 2026/03/13 00:00:21 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:00:21 logging.go:29: Completed GET /registries Status: OK Duration: 12.156875ms
+INFO: 2026/03/13 00:00:21 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:00:21 logging.go:29: Completed GET /registries Status: OK Duration: 3.776125ms
+INFO: 2026/03/13 00:00:25 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:00:25 logging.go:29: Completed GET /registries Status: OK Duration: 4.644125ms
+INFO: 2026/03/13 00:00:25 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:00:25 logging.go:29: Completed GET /registries Status: OK Duration: 3.7485ms
+INFO: 2026/03/13 00:02:02 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:02:02 logging.go:29: Started GET /registries
+ERROR: 2026/03/13 00:02:02 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/13 00:02:02 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 94.083µs
+INFO: 2026/03/13 00:02:02 logging.go:29: Started GET /registries
+ERROR: 2026/03/13 00:02:02 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/13 00:02:02 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 285.625µs
+INFO: 2026/03/13 00:02:02 logging.go:29: Completed GET /registries Status: OK Duration: 11.967375ms
+INFO: 2026/03/13 00:02:15 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:02:15 logging.go:29: Completed GET /registries Status: OK Duration: 10.780458ms
+INFO: 2026/03/13 00:02:15 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:02:15 logging.go:29: Completed GET /registries Status: OK Duration: 2.165708ms
+INFO: 2026/03/13 00:04:57 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:04:57 logging.go:29: Completed GET /registries Status: OK Duration: 33.419125ms
+INFO: 2026/03/13 00:04:57 logging.go:29: Started GET /registries
+ERROR: 2026/03/13 00:04:57 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/13 00:04:57 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 353.084µs
+INFO: 2026/03/13 00:04:57 logging.go:29: Started GET /registries
+ERROR: 2026/03/13 00:04:57 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/13 00:04:57 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 154.542µs
+INFO: 2026/03/13 00:05:00 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:05:00 logging.go:29: Completed GET /registries Status: OK Duration: 4.646ms
+INFO: 2026/03/13 00:05:00 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:05:00 logging.go:29: Completed GET /registries Status: OK Duration: 7.690875ms
+INFO: 2026/03/13 00:06:01 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:06:01 logging.go:29: Completed GET /registries Status: OK Duration: 31.710167ms
+INFO: 2026/03/13 00:06:01 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:06:01 logging.go:29: Completed GET /registries Status: OK Duration: 1.618042ms
+INFO: 2026/03/13 00:08:58 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:08:58 logging.go:29: Completed GET /registries Status: OK Duration: 25.941292ms
+INFO: 2026/03/13 00:08:58 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:08:58 logging.go:29: Completed GET /registries Status: OK Duration: 2.609625ms
+INFO: 2026/03/13 00:09:15 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:09:15 logging.go:29: Completed GET /registries Status: OK Duration: 5.37375ms
+INFO: 2026/03/13 00:09:15 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:09:15 logging.go:29: Completed GET /registries Status: OK Duration: 2.684208ms
+INFO: 2026/03/13 00:15:30 logging.go:29: Started GET /registries
+ERROR: 2026/03/13 00:15:30 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/13 00:15:30 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 4.044875ms
+INFO: 2026/03/13 00:15:30 logging.go:29: Started GET /registries
+ERROR: 2026/03/13 00:15:30 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/13 00:15:30 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 50.708µs
+INFO: 2026/03/13 00:15:31 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:15:31 logging.go:29: Completed GET /registries Status: OK Duration: 15.969167ms
+INFO: 2026/03/13 00:15:34 logging.go:29: Started GET /registries
+ERROR: 2026/03/13 00:15:34 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/13 00:15:34 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 207.417µs
+INFO: 2026/03/13 00:15:34 logging.go:29: Started GET /registries
+ERROR: 2026/03/13 00:15:34 logging.go:36: Token validation error: token has invalid claims: token is expired
+INFO: 2026/03/13 00:15:34 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 215.292µs
+INFO: 2026/03/13 00:15:35 logging.go:29: Started GET /registries
+INFO: 2026/03/13 00:15:35 logging.go:29: Completed GET /registries Status: OK Duration: 5.581042ms

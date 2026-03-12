@@ -1,86 +1,67 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import api from '../api';
-import { RegistrySkeleton } from "@/components/skeletons/RegistrySkeleton"
-import { RegistryCard } from "@/components/registries/RegistryCard";
-import { Button } from "@/components/ui/button"
-import { Plus } from 'lucide-react';
+
 
 const Home = () => {
-    const [registries, setRegistries] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchRegistries = async () => {
-            try {
-                // Initial delay to show off skeleton (simulating network, remove in prod if desired)
-                await new Promise(resolve => setTimeout(resolve, 500));
-                const res = await api.get('/registries');
-                setRegistries(res.data || []);
-            } catch (error) {
-                console.error("Failed to fetch registries", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchRegistries();
-    }, []);
 
     if (isLoading) {
         return (
-            <div className="space-y-8">
-                <div className="flex justify-between items-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-foreground">My Prompt Registries</h2>
-                    <div className="flex gap-4">
-                        <div className="w-32 h-10 bg-muted rounded-md animate-pulse"></div>
-                        <div className="w-32 h-10 bg-muted rounded-md animate-pulse"></div>
-                    </div>
+            <div className="max-w-4xl mx-auto space-y-6">
+                <h2 className="text-xl font-medium tracking-tight text-foreground pb-2 border-b text-center">Followed threads</h2>
+                <div className="space-y-4">
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="border bg-card rounded-lg p-5 flex flex-col gap-4 animate-pulse">
+                            <div className="h-5 bg-muted rounded w-2/3"></div>
+                            <div className="h-4 bg-muted rounded w-1/4"></div>
+                            <div className="h-4 bg-muted rounded w-1/2"></div>
+                        </div>
+                    ))}
                 </div>
-                <RegistrySkeleton />
             </div>
         );
     }
 
-    return (
-        <div className="space-y-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h2 className="text-3xl font-bold tracking-tight text-foreground">My Prompt Registries</h2>
-                    <p className="text-muted-foreground mt-2">Manage your collections of prompts.</p>
-                </div>
-                <div className="flex gap-4">
-                    <Link to="/create-registry">
-                        <Button size="lg" className="shadow-lg">
-                            <Plus className="mr-2 h-5 w-5" /> New Registry
-                        </Button>
-                    </Link>
-                    <Link to="/create-prompt">
-                        <Button size="lg" className="shadow-lg">
-                            <Plus className="mr-2 h-5 w-5" /> New Prompt
-                        </Button>
-                    </Link>
-                </div>
-            </div>
+    // Dummy data for the new wireframe
+    const dummyThreads = [
+        { id: 1, promptName: "Creative Writing Starter", registryName: "Writing Prompts", createdBy: "Alice", replies: 12, followed: 45 },
+        { id: 2, promptName: "Code Review Assistant", registryName: "Dev Tools", createdBy: "BobDev", replies: 34, followed: 120 },
+        { id: 3, promptName: "Weekly Meal Planner", registryName: "Lifestyle", createdBy: "ChefJane", replies: 5, followed: 22 },
+        { id: 4, promptName: "SEO Blog Post Generator", registryName: "Marketing", createdBy: "SamDigital", replies: 89, followed: 340 }
+    ];
 
-            {registries.length === 0 ? (
-                <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg bg-muted/10">
-                    <div className="h-16 w-16 bg-muted rounded-full flex items-center justify-center mb-4">
-                        <Plus className="h-8 w-8 text-muted-foreground" />
+    return (
+        <div className="max-w-4xl mx-auto space-y-6">
+            <h2 className="text-xl font-medium tracking-tight text-foreground pb-2 border-b text-center">Followed threads</h2>
+            
+            <div className="space-y-4">
+                {dummyThreads.map(thread => (
+                    <div key={thread.id} className="border bg-card rounded-lg p-5 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <h3 className="font-semibold text-lg">{thread.promptName}</h3>
+                                <span className="text-muted-foreground text-sm">•</span>
+                                <span className="text-muted-foreground text-sm">{thread.registryName}</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground mt-1">Author <span className="text-foreground font-medium">{thread.createdBy}</span></p>
+                        </div>
+                        
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
+                            <span>Total Replies <span className="text-foreground font-medium">{thread.replies}</span></span>
+                            <span>•</span>
+                            <span>Followed by <span className="text-foreground font-medium">{thread.followed}</span></span>
+                        </div>
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">No registries yet</h3>
-                    <p className="text-muted-foreground mb-6 text-center max-w-sm">Create your first registry to start organizing your prompts.</p>
-                    <Link to="/create-registry">
-                        <Button>Create Registry</Button>
-                    </Link>
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {registries.map((registry) => (
-                        <RegistryCard key={registry.id} registry={registry} />
-                    ))}
-                </div>
-            )}
+                ))}
+            </div>
+            <div className="text-center pt-0 text-sm text-muted-foreground">
+                <span className="hover:underline cursor-pointer">show more</span>
+                <span className="mx-2">•</span>
+                <span>viewing 4 threads</span>
+                <span className="mx-2">•</span>
+                <span>Total 89 threads</span>
+            </div>
         </div>
     );
 };
