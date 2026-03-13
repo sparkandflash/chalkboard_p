@@ -110,14 +110,24 @@ export const Header = () => {
                     </svg>
 
                     {/* Input on top of SVG */}
-                    <div className="absolute inset-0 flex items-center gap-2 px-10 z-10">
+                    <form 
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            const query = e.target.search.value.trim();
+                            if (query) {
+                                navigate(`/?q=${encodeURIComponent(query)}`);
+                            }
+                        }}
+                        className="absolute inset-0 flex items-center gap-2 px-10 z-10"
+                    >
                         <Search className="h-4 w-4 text-muted-foreground stroke-[2] shrink-0" />
                         <input
+                            name="search"
                             type="search"
                             placeholder="Search..."
                             className="w-full bg-transparent outline-none text-sm italic text-foreground placeholder:text-muted-foreground/50"
                         />
-                    </div>
+                    </form>
                 </div>
 
                 {/* Right line */}

@@ -1,0 +1,6 @@
+.env
+*.log
+main
+/tmp
+.git
+.DS_Store
