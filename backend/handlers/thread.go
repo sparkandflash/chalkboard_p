@@ -110,3 +110,81 @@ func GetRecentThreads(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(threads)
 }
 
+func GetThreadDetail(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	idStr := r.URL.Path[len("/threads/"):]
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid thread ID", http.StatusBadRequest)
+		return
+	}
+
+	var thread models.Thread
+	err = database.DB.Preload("Prompt").
+		Preload("Prompt.User").
+		Preload("Prompt.Registry").
+		Preload("User").
+		Preload("Comments").
+		Preload("Comments.User").
+		Preload("Followers").
+		First(&thread, id).Error
+
+	if err != nil {
+		http.Error(w, "Thread not found", http.StatusNotFound)
+		return
+	}
+
+	thread.UserName = thread.User.Username
+	if thread.UserName == "" {
+		thread.UserName = "Anonymous"
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(thread)
+}
+
+func SearchThreads(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	queryParam := r.URL.Query().Get("q")
+	if queryParam == "" {
+		http.Error(w, "Query parameter 'q' is required", http.StatusBadRequest)
+		return
+	}
+
+	var threads []models.Thread
+	err := database.DB.Model(&models.Thread{}).
+		Joins("JOIN prompts ON prompts.id = threads.prompt_id").
+		Where("prompts.title ILIKE ?", "%"+queryParam+"%").
+		Preload("Prompt").
+		Preload("Prompt.User").
+		Preload("Prompt.Registry").
+		Preload("User").
+		Preload("Comments").
+		Preload("Followers").
+		Find(&threads).Error
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	for i := range threads {
+		threads[i].UserName = threads[i].User.Username
+		if threads[i].UserName == "" {
+			threads[i].UserName = "Anonymous"
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(threads)
+}
+
+

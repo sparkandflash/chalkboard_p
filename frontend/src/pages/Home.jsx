@@ -1,9 +1,14 @@
 import { UserRegistries } from '../components/dashboard/UserRegistries';
 import { RecentThreads } from '../components/dashboard/RecentThreads';
 import { useState, useEffect } from 'react';
+import { useLocation, Link } from 'react-router-dom';
 import api from '../api';
 
 const Home = () => {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const searchQuery = searchParams.get('q');
+
     const [registries, setRegistries] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -32,17 +37,28 @@ const Home = () => {
         const fetchThreads = async () => {
             setIsLoadingThreads(true);
             try {
-                const res = await api.get(`/threads?filter=${filter}&page=${page}&limit=5`);
+                let url = `/threads?filter=${filter}&page=${page}&limit=5`;
+                
+                if (searchQuery) {
+                    // Reset page to 1 for new search if it was handled differently, 
+                    // but here we just use the query for listing. 
+                    // Search doesn't have pagination implemented on backend yet as requested "simple search"
+                    url = `/threads/search?q=${encodeURIComponent(searchQuery)}`;
+                }
+
+                const res = await api.get(url);
                 const newThreads = res.data || [];
                 
-                if (page === 1) {
+                if (page === 1 || searchQuery) {
                     setThreads(newThreads);
                 } else {
                     setThreads(prev => [...prev, ...newThreads]);
                 }
                 
-                // If we got fewer than 5, there are no more
-                if (newThreads.length < 5) {
+                // Pagination logic for normal feed, disable for search for now
+                if (searchQuery) {
+                    setHasMore(false);
+                } else if (newThreads.length < 5) {
                     setHasMore(false);
                 } else {
                     setHasMore(true);
@@ -54,7 +70,7 @@ const Home = () => {
             }
         };
         fetchThreads();
-    }, [filter, page]);
+    }, [filter, page, searchQuery]);
 
     const handleFilterChange = (newFilter) => {
         if (newFilter !== filter) {
@@ -107,21 +123,36 @@ const Home = () => {
 
             {/* Center Content: Feed */}
             <main className="lg:col-span-6 space-y-6">
-                <div className="flex items-center justify-center gap-4 text-md font-medium pb-2 border-b">
-                    <button 
-                        onClick={() => handleFilterChange('followed')}
-                        className={`transition-colors ${filter === 'followed' ? 'text-foreground font-bold' : 'text-neutral-500 hover:text-foreground'}`}
-                    >
-                        Latest threads
-                    </button>
-                    <span className="text-neutral-300">|</span>
-                    <button 
-                        onClick={() => handleFilterChange('created')}
-                        className={`transition-colors ${filter === 'created' ? 'text-foreground font-bold' : 'text-neutral-500 hover:text-foreground'}`}
-                    >
-                        Your threads
-                    </button>
-                </div>
+                {searchQuery ? (
+                    <div className="flex items-center justify-between pb-2 border-b">
+                        <div className="flex items-center gap-2">
+                            <span className="text-neutral-500 font-medium">Search results for:</span>
+                            <span className="text-foreground font-bold italic">"{searchQuery}"</span>
+                        </div>
+                        <Link 
+                            to="/" 
+                            className="text-sm text-muted-foreground hover:text-primary transition-colors underline underline-offset-4"
+                        >
+                            Clear search
+                        </Link>
+                    </div>
+                ) : (
+                    <div className="flex items-center justify-center gap-4 text-md font-medium pb-2 border-b">
+                        <button 
+                            onClick={() => handleFilterChange('followed')}
+                            className={`transition-colors ${filter === 'followed' ? 'text-foreground font-bold' : 'text-neutral-500 hover:text-foreground'}`}
+                        >
+                            Latest threads
+                        </button>
+                        <span className="text-neutral-300">|</span>
+                        <button 
+                            onClick={() => handleFilterChange('created')}
+                            className={`transition-colors ${filter === 'created' ? 'text-foreground font-bold' : 'text-neutral-500 hover:text-foreground'}`}
+                        >
+                            Your threads
+                        </button>
+                    </div>
+                )}
                 
                 <div className="space-y-4">
                     {threads.map(thread => (
