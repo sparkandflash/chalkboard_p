@@ -12,10 +12,7 @@ server {
 
     # Proxy API requests to the backend internal URL
     location /api/ {
-        # Using variable for proxy_pass to force dynamic DNS resolution
-        set $backend "http://globalprompt:8080";
-        proxy_pass $backend/;
-        
+        proxy_pass http://globalprompt:8080/;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';

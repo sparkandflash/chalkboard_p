@@ -12,9 +12,14 @@ RUN npm run build
 # Final stage
 FROM nginx:alpine
 
-# Copy the template to a neutral location
-COPY nginx.conf.template /nginx.conf.template
+# Official Nginx image supports templates in /etc/nginx/templates/
+# It automatically runs envsubst on them and puts the result in /etc/nginx/conf.d/
+COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Explicitly replace $PORT and start nginx
-CMD ["/bin/sh" , "-c" , "envsubst '${PORT}' < /nginx.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
+# ONLY replace the PORT variable to avoid breaking nginx variables like $uri
+ENV NGINX_ENVSUBST_FILTER=PORT
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
