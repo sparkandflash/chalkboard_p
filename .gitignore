@@ -27,3 +27,4 @@ backend/backend
 .vscode/
 .idea/
 *.swp
+backend/app.log
