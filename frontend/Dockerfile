@@ -12,8 +12,10 @@ RUN npm run build
 # Final stage
 FROM nginx:alpine
 
+# FIX: Force Nginx to use only 1 worker process instead of checking host CPU cores
+RUN sed -i 's/worker_processes.*/worker_processes 1;/' /etc/nginx/nginx.conf
+
 # Official Nginx image supports templates in /etc/nginx/templates/
-# It automatically runs envsubst on them and puts the result in /etc/nginx/conf.d/
 COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=builder /app/dist /usr/share/nginx/html
 
