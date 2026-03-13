@@ -30,7 +30,7 @@ function App() {
       <Router>
         <div className="min-h-screen flex flex-col bg-background transition-colors duration-300">
           <Header />
-          <div className="w-1/2 mx-auto py-6 flex-1">
+          <div className="w-full max-w-[1600px] mx-auto px-3 md:px-3 py-3 flex-1">
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />

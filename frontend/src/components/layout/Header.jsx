@@ -43,9 +43,11 @@ export const Header = () => {
                         <>
                             <RouterLink to="/" className="hover:text-primary transition-colors">Home</RouterLink>
                             <span className="text-muted-foreground">•</span>
-                            <RouterLink to="/create-prompt" className="hover:text-primary transition-colors">New</RouterLink>
+                            <RouterLink to="/create-registry" className="hover:text-primary transition-colors">New Registry</RouterLink>
                             <span className="text-muted-foreground">•</span>
-                            <RouterLink to="/" className="hover:text-primary transition-colors">My Registries</RouterLink>
+                            <RouterLink to="/create-prompt" className="hover:text-primary transition-colors">New prompt</RouterLink>
+                             <span className="text-muted-foreground">•</span>
+                            <RouterLink to="/docs" className="hover:text-primary transition-colors">docs</RouterLink>
                         </>
                     ) : (
                         <RouterLink to="/login" className="hover:text-primary transition-colors">Login</RouterLink>
@@ -59,6 +61,8 @@ export const Header = () => {
                 <nav className="flex items-center gap-2 text-sm font-medium whitespace-nowrap hidden md:flex">
                     {isLoggedIn ? (
                         <>
+                            <button className="hover:text-primary transition-colors">Notifications</button>
+                            <span className="text-muted-foreground">•</span>
                             <RouterLink to="/profile" className="hover:text-primary transition-colors">Profile</RouterLink>
                             <span className="text-muted-foreground">•</span>
                             <RouterLink to="/settings" className="hover:text-primary transition-colors">Settings</RouterLink>

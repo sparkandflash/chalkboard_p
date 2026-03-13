@@ -83,8 +83,8 @@ const RegistryDetail = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-6">
-                {registry.Prompts && registry.Prompts.length > 0 ? (
-                    registry.Prompts.map((prompt) => (
+                {registry.prompts && registry.prompts.length > 0 ? (
+                    registry.prompts.map((prompt) => (
                         <PromptCard key={prompt.id} prompt={prompt} />
                     ))
                 ) : (

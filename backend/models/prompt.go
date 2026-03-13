@@ -17,6 +17,7 @@ type Prompt struct {
 	Description string         `json:"description"`
 	Version     string         `json:"version"`
 	Tags        string         `json:"tags"` // JSON string or comma-separated
+	Threads     []Thread       `json:"threads" gorm:"foreignKey:PromptID"`
 	CreatedAt   time.Time      `json:"createdAt"`
 	UpdatedAt   time.Time      `json:"updatedAt"`
 	DeletedAt   gorm.DeletedAt `json:"deletedAt" gorm:"index"`

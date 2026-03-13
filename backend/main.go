@@ -30,7 +30,7 @@ func main() {
 	// Connect to Database
 	database.Connect()
 	// Auto Migrate
-	database.DB.AutoMigrate(&models.User{}, &models.Registry{}, &models.Prompt{})
+	database.DB.AutoMigrate(&models.User{}, &models.Registry{}, &models.Prompt{}, &models.Thread{}, &models.Comment{})
 
 	mux := http.NewServeMux()
 
@@ -72,6 +72,29 @@ func main() {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		})
 		middleware.LoggingMiddleware(handler).ServeHTTP(w, r)
+	})
+
+	// Thread Handlers
+	mux.HandleFunc("/threads", func(w http.ResponseWriter, r *http.Request) {
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.Method == http.MethodGet {
+				handlers.GetThreads(w, r)
+				return
+			}
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		})
+		middleware.LoggingMiddleware(middleware.AuthMiddleware(handler)).ServeHTTP(w, r)
+	})
+
+	mux.HandleFunc("/recent-threads", func(w http.ResponseWriter, r *http.Request) {
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.Method == http.MethodGet {
+				handlers.GetRecentThreads(w, r)
+				return
+			}
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		})
+		middleware.LoggingMiddleware(middleware.AuthMiddleware(handler)).ServeHTTP(w, r)
 	})
 
 	// Add CORS middleware

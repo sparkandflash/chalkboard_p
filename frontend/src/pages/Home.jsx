@@ -1,17 +1,22 @@
+import { UserRegistries } from '../components/dashboard/UserRegistries';
+import { RecentThreads } from '../components/dashboard/RecentThreads';
 import { useState, useEffect } from 'react';
-
 import api from '../api';
-
 
 const Home = () => {
     const [registries, setRegistries] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    // Threads feed state
+    const [threads, setThreads] = useState([]);
+    const [isLoadingThreads, setIsLoadingThreads] = useState(false);
+    const [filter, setFilter] = useState('followed'); // 'followed' or 'created'
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+
     useEffect(() => {
         const fetchRegistries = async () => {
             try {
-                // Initial delay to show off skeleton (simulating network, remove in prod if desired)
-                await new Promise(resolve => setTimeout(resolve, 500));
                 const res = await api.get('/registries');
                 setRegistries(res.data || []);
             } catch (error) {
@@ -20,66 +25,166 @@ const Home = () => {
                 setIsLoading(false);
             }
         };
-
         fetchRegistries();
     }, []);
 
+    useEffect(() => {
+        const fetchThreads = async () => {
+            setIsLoadingThreads(true);
+            try {
+                const res = await api.get(`/threads?filter=${filter}&page=${page}&limit=5`);
+                const newThreads = res.data || [];
+                
+                if (page === 1) {
+                    setThreads(newThreads);
+                } else {
+                    setThreads(prev => [...prev, ...newThreads]);
+                }
+                
+                // If we got fewer than 5, there are no more
+                if (newThreads.length < 5) {
+                    setHasMore(false);
+                } else {
+                    setHasMore(true);
+                }
+            } catch (error) {
+                console.error("Failed to fetch threads", error);
+            } finally {
+                setIsLoadingThreads(false);
+            }
+        };
+        fetchThreads();
+    }, [filter, page]);
+
+    const handleFilterChange = (newFilter) => {
+        if (newFilter !== filter) {
+            setFilter(newFilter);
+            setPage(1);
+            setThreads([]);
+        }
+    };
+
     if (isLoading) {
         return (
-            <div className="max-w-4xl mx-auto space-y-6">
-                <h2 className="text-xl font-medium tracking-tight text-foreground pb-2 border-b text-center">Your prompt threads</h2>
-                <div className="space-y-4">
-                    {[1, 2, 3].map(i => (
-                        <div key={i} className="border bg-card rounded-lg p-5 flex flex-col gap-4 animate-pulse">
-                            <div className="h-5 bg-muted rounded w-2/3"></div>
-                            <div className="h-4 bg-muted rounded w-1/4"></div>
-                            <div className="h-4 bg-muted rounded w-1/2"></div>
-                        </div>
-                    ))}
+            <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Left Sidebar Skeleton */}
+                <div className="hidden lg:block lg:col-span-3">
+                    <div className="border rounded-lg p-4 h-[300px] bg-card animate-pulse"></div>
+                </div>
+
+                {/* Main Content Skeleton */}
+                <div className="lg:col-span-6 space-y-6">
+                    <div className="flex items-center justify-center gap-4 text-md font-medium text-neutral-500 pb-2 border-b">
+                        <span className="cursor-pointer">Latest threads</span>
+                        <span>|</span>
+                        <span className="cursor-pointer">Your threads</span>
+                    </div>
+                    <div className="space-y-4">
+                        {[1, 2, 3].map(i => (
+                            <div key={i} className="border bg-card rounded-lg p-5 flex flex-col gap-4 animate-pulse">
+                                <div className="h-5 bg-muted rounded w-2/3"></div>
+                                <div className="h-4 bg-muted rounded w-1/4"></div>
+                                <div className="h-4 bg-muted rounded w-1/2"></div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Right Sidebar Skeleton */}
+                <div className="hidden lg:block lg:col-span-3">
+                    <div className="border rounded-lg p-4 h-[200px] bg-card animate-pulse"></div>
                 </div>
             </div>
         );
     }
 
-    // Dummy data for the new wireframe
-    const dummyThreads = [
-        { id: 1, promptName: "Creative Writing Starter", registryName: "Writing Prompts", createdBy: "Alice", replies: 12, followed: 45 },
-        { id: 2, promptName: "Code Review Assistant", registryName: "Dev Tools", createdBy: "BobDev", replies: 34, followed: 120 },
-        { id: 3, promptName: "Weekly Meal Planner", registryName: "Lifestyle", createdBy: "ChefJane", replies: 5, followed: 22 },
-        { id: 4, promptName: "SEO Blog Post Generator", registryName: "Marketing", createdBy: "SamDigital", replies: 89, followed: 340 }
-    ];
-
     return (
-        <div className="max-w-4xl mx-auto space-y-6">
-            <h2 className="text-xl font-medium tracking-tight text-foreground pb-2 border-b text-center">Your prompt threads</h2>
-            
-            <div className="space-y-4">
-                {dummyThreads.map(thread => (
-                    <div key={thread.id} className="border bg-card rounded-lg p-2 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
-                        <div>
-                            <div className="flex items-center gap-1">
-                                <h3 className="font-semibold text-lg">{thread.promptName}</h3>
-                                <span className="text-muted-foreground text-sm">•</span>
-                                <span className="text-muted-foreground text-sm">{thread.registryName}</span>
+        <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Left Sidebar: My Registries */}
+            <aside className="hidden lg:block lg:col-span-3 sticky top-6">
+                <UserRegistries />
+            </aside>
+
+            {/* Center Content: Feed */}
+            <main className="lg:col-span-6 space-y-6">
+                <div className="flex items-center justify-center gap-4 text-md font-medium pb-2 border-b">
+                    <button 
+                        onClick={() => handleFilterChange('followed')}
+                        className={`transition-colors ${filter === 'followed' ? 'text-foreground font-bold' : 'text-neutral-500 hover:text-foreground'}`}
+                    >
+                        Latest threads
+                    </button>
+                    <span className="text-neutral-300">|</span>
+                    <button 
+                        onClick={() => handleFilterChange('created')}
+                        className={`transition-colors ${filter === 'created' ? 'text-foreground font-bold' : 'text-neutral-500 hover:text-foreground'}`}
+                    >
+                        Your threads
+                    </button>
+                </div>
+                
+                <div className="space-y-4">
+                    {threads.map(thread => (
+                        <div key={thread.id} className="border bg-card rounded-lg p-2 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
+                            <div>
+                                <div className="flex items-center gap-1">
+                                    <h3 className="font-semibold text-lg">{thread.prompt?.title}</h3>
+                                    <span className="text-muted-foreground text-sm">•</span>
+                                    <span className="text-muted-foreground text-sm">{thread.prompt?.registry?.name}</span>
+                                </div>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                    <span className="text-neutral-500">by:</span> 
+                                    <span className="text-foreground font-medium"> {thread.userName}</span>
+                                </p>
                             </div>
-                            <p className="text-sm text-muted-foreground mt-1"><span className="text-neutral-500">by:</span> <span className="text-foreground font-medium">{thread.createdBy}</span></p>
+                            
+                            <div className="flex items-center gap-2 text-neutral-500 text-sm pt-2">
+                                <span>Total Replies <span className="text-foreground font-medium">{thread.comments?.length || 0}</span></span>
+                                <span>•</span>
+                                <span>Followed by <span className="text-foreground font-medium">{thread.followers?.length || 0}</span></span>
+                            </div>
                         </div>
-                        
-                        <div className="flex items-center gap-2 text-neutral-500 text-sm text-muted-foreground pt-2">
-                            <span>Total Replies <span className="text-foreground font-medium">{thread.replies}</span></span>
-                            <span>•</span>
-                            <span>Followed by <span className="text-foreground font-medium">{thread.followed}</span></span>
+                    ))}
+
+                    {isLoadingThreads && page > 1 && (
+                        <div className="space-y-4">
+                            {[1, 2].map(i => (
+                                <div key={i} className="border bg-card rounded-lg p-5 flex flex-col gap-4 animate-pulse opacity-50">
+                                    <div className="h-5 bg-muted rounded w-2/3"></div>
+                                    <div className="h-4 bg-muted rounded w-1/4"></div>
+                                </div>
+                            ))}
                         </div>
+                    )}
+                </div>
+
+                {!isLoadingThreads && threads.length === 0 && (
+                    <div className="text-center py-10 text-neutral-500 italic">
+                        No threads found in this category.
                     </div>
-                ))}
-            </div>
-              <div className="text-center pt-0 text-sm">
-                <span className="text-neutral-500">viewing 4 threads</span>
-                <span className="mx-2 text-neutral-500">•</span>
-                <span className="text-muted-foreground hover:underline cursor-pointer">show more</span>
-                <span className="mx-2 text-neutral-500">•</span>
-                <span className="text-neutral-500">Total 89 threads</span>
-            </div>
+                )}
+
+                <div className="text-center pt-0 text-sm">
+                    <span className="text-neutral-500">viewing {threads.length} threads</span>
+                    {hasMore && (
+                        <>
+                            <span className="mx-2 text-neutral-500">•</span>
+                            <button 
+                                onClick={() => setPage(p => p + 1)}
+                                disabled={isLoadingThreads}
+                                className="text-muted-foreground hover:underline cursor-pointer disabled:opacity-50"
+                            >
+                                {isLoadingThreads ? 'loading...' : 'show more'}
+                            </button>
+                        </>
+                    )}
+                </div>
+            </main>
+
+            {/* Right Sidebar: Recent Threads */}
+            <aside className="hidden lg:block lg:col-span-3 sticky top-6">
+                <RecentThreads />
+            </aside>
         </div>
     );
 };

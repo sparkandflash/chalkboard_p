@@ -7,6 +7,8 @@ import (
 	"backend/database"
 	"backend/middleware"
 	"backend/models"
+
+	"gorm.io/gorm"
 )
 
 func CreatePrompt(w http.ResponseWriter, r *http.Request) {
@@ -30,8 +32,27 @@ func CreatePrompt(w http.ResponseWriter, r *http.Request) {
 	// Set the UserID from the authenticated token
 	req.UserID = userId
 
-	if result := database.DB.Create(&req); result.Error != nil {
-		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
+	// Wrap in a transaction to ensure both prompt and default thread are created
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&req).Error; err != nil {
+			return err
+		}
+
+		// Create default thread
+		defaultThread := models.Thread{
+			UserID:    req.UserID,
+			PromptID:  req.ID,
+			IsDefault: true,
+		}
+		if err := tx.Create(&defaultThread).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 

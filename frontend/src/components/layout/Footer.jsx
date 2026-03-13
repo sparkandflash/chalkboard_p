@@ -9,8 +9,8 @@ export const Footer = () => {
                 <button onClick={() => {/* logout handled in header or context usually, will wire up later */}} className="text-sm font-medium hover:underline underline-offset-4">logout</button>
                  <span className="text-muted-foreground">•</span>
                 <Link to="/settings" className="text-sm font-medium hover:underline underline-offset-4">settings</Link>
-                 <span className="text-muted-foreground">•</span>
-                <Link to="/" className="text-sm font-medium hover:underline underline-offset-4">my registries</Link>
+                <span className="text-muted-foreground">•</span>
+                <Link to="/docs" className="text-sm font-medium hover:underline underline-offset-4">docs</Link>
             </div>
         </footer>
     );
