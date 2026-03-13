@@ -12,7 +12,10 @@ server {
 
     # Proxy API requests to the backend internal URL
     location /api/ {
-        proxy_pass http://globalprompt:8080/;
+        # Using variable for proxy_pass to force dynamic DNS resolution
+        set $backend "http://globalprompt:8080";
+        proxy_pass $backend/;
+        
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -21,5 +24,8 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+
+        # Standard Docker/Railway DNS resolver
+        resolver 127.0.0.11 valid=30s;
     }
 }
