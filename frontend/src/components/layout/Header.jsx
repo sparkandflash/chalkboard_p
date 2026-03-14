@@ -27,6 +27,15 @@ export const Header = () => {
         };
     }, []);
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const query = formData.get('search');
+        if (query && query.trim()) {
+            navigate(`/?q=${encodeURIComponent(query.trim())}`);
+        }
+    };
+
     // Shared border thickness (px) — single source of truth
     const borderWeight = '3.5px';
     const borderColor = 'currentColor'; // inherits text color (foreground)
@@ -115,14 +124,15 @@ export const Header = () => {
                     </svg>
 
                     {/* Input on top of SVG */}
-                    <div className="absolute inset-0 flex items-center gap-2 px-10 z-10">
+                    <form onSubmit={handleSearch} className="absolute inset-0 flex items-center gap-2 px-10 z-10">
                         <Search className="h-4 w-4 text-muted-foreground stroke-[2] shrink-0" />
                         <input
                             type="search"
+                            name="search"
                             placeholder="Search..."
                             className="w-full bg-transparent outline-none text-sm italic text-foreground placeholder:text-muted-foreground/50"
                         />
-                    </div>
+                    </form>
                 </div>
 
                 {/* Right line */}
