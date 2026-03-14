@@ -23,7 +23,7 @@ export const UserRegistries = () => {
   if (isLoading) {
     return (
       <div className="border rounded-lg p-4 h-full bg-card shadow-sm animate-pulse">
-        <h3 className="font-semibold text-lg mb-4 text-foreground border-b pb-2">My Registries</h3>
+        <h3 className="font-semibold text-lg mb-4 text-foreground pb-2">My Registries</h3>
         <div className="space-y-4">
           {[1, 2, 3].map(i => (
             <div key={i} className="flex items-center gap-2">
@@ -38,7 +38,7 @@ export const UserRegistries = () => {
 
   return (
     <div className="border rounded-lg p-4 h-full bg-card shadow-sm">
-      <h3 className="font-semibold text-lg mb-4 text-foreground border-b pb-2">My Registries</h3>
+      <h3 className="font-semibold text-lg mb-4 text-foreground pb-2">My Registries</h3>
       {registries.length === 0 ? (
         <p className="text-sm text-muted-foreground italic">No registries found.</p>
       ) : (

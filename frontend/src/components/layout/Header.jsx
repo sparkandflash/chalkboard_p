@@ -9,6 +9,7 @@ export const Header = () => {
     const handleLogout = () => {
         localStorage.removeItem('auth_token');
         localStorage.removeItem('user_email');
+        window.dispatchEvent(new Event('authChange'));
         setIsLoggedIn(false);
         navigate('/login');
     };
@@ -18,8 +19,12 @@ export const Header = () => {
             setIsLoggedIn(!!localStorage.getItem('auth_token'));
         };
         window.addEventListener('storage', checkAuth);
+        window.addEventListener('authChange', checkAuth);
         checkAuth();
-        return () => window.removeEventListener('storage', checkAuth);
+        return () => {
+            window.removeEventListener('storage', checkAuth);
+            window.removeEventListener('authChange', checkAuth);
+        };
     }, []);
 
     // Shared border thickness (px) — single source of truth
@@ -110,24 +115,14 @@ export const Header = () => {
                     </svg>
 
                     {/* Input on top of SVG */}
-                    <form 
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            const query = e.target.search.value.trim();
-                            if (query) {
-                                navigate(`/?q=${encodeURIComponent(query)}`);
-                            }
-                        }}
-                        className="absolute inset-0 flex items-center gap-2 px-10 z-10"
-                    >
+                    <div className="absolute inset-0 flex items-center gap-2 px-10 z-10">
                         <Search className="h-4 w-4 text-muted-foreground stroke-[2] shrink-0" />
                         <input
-                            name="search"
                             type="search"
                             placeholder="Search..."
                             className="w-full bg-transparent outline-none text-sm italic text-foreground placeholder:text-muted-foreground/50"
                         />
-                    </form>
+                    </div>
                 </div>
 
                 {/* Right line */}

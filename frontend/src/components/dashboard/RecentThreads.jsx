@@ -23,7 +23,7 @@ export const RecentThreads = () => {
   if (isLoading) {
     return (
       <div className="border rounded-lg p-4 h-full bg-card shadow-sm animate-pulse">
-        <h3 className="font-semibold text-lg mb-4 text-foreground border-b pb-2">Recent Threads</h3>
+        <h3 className="font-semibold text-lg mb-4 text-foreground pb-2">Recent discussions</h3>
         <div className="space-y-4">
           {[1, 2].map(i => (
             <div key={i} className="flex flex-col gap-2">
@@ -37,7 +37,7 @@ export const RecentThreads = () => {
 
   return (
     <div className="border rounded-lg p-4 h-full bg-card shadow-sm">
-      <h3 className="font-semibold text-lg mb-4 text-foreground border-b pb-2">Recent Threads</h3>
+      <h3 className="font-semibold text-lg mb-4 text-foreground pb-2">Recent discussions</h3>
       {recentThreads.length === 0 ? (
         <p className="text-xs text-neutral-500 italic">No activity today. Threads will appear here when you comment on them.</p>
       ) : (
