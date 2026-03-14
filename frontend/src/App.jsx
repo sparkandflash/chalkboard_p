@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import CreateRegistry from './pages/CreateRegistry'
 import RegistryDetail from './pages/RegistryDetail'
 import CreatePrompt from './pages/CreatePrompt'
+import ThreadDetail from './pages/ThreadDetail'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 
@@ -48,6 +49,11 @@ function App() {
               <Route path="/registry/:id" element={
                 <ProtectedRoute>
                   <RegistryDetail />
+                </ProtectedRoute>
+              } />
+              <Route path="/thread/:id" element={
+                <ProtectedRoute>
+                  <ThreadDetail />
                 </ProtectedRoute>
               } />
               <Route path="/create-prompt" element={

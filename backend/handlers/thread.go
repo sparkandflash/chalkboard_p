@@ -187,4 +187,160 @@ func SearchThreads(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(threads)
 }
 
+func ToggleFollowThread(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 
+	userId, ok := r.Context().Value(middleware.UserIDKey).(uint)
+	if !ok || userId == 0 {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	idStr := r.URL.Path[len("/threads/") : len(r.URL.Path)-len("/follow")]
+	threadId, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid thread ID", http.StatusBadRequest)
+		return
+	}
+
+	var thread models.Thread
+	if err := database.DB.Preload("Followers").First(&thread, threadId).Error; err != nil {
+		http.Error(w, "Thread not found", http.StatusNotFound)
+		return
+	}
+
+	var user models.User
+	if err := database.DB.First(&user, userId).Error; err != nil {
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
+
+	// Check if already following
+	var isFollowing bool
+	for _, f := range thread.Followers {
+		if f.ID == userId {
+			isFollowing = true
+			break
+		}
+	}
+
+	if isFollowing {
+		// Unfollow
+		err = database.DB.Model(&thread).Association("Followers").Delete(&user)
+	} else {
+		// Follow
+		err = database.DB.Model(&thread).Association("Followers").Append(&user)
+	}
+
+	if err != nil {
+		http.Error(w, "Failed to toggle follow status", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]bool{"isFollowing": !isFollowing})
+}
+
+func CreateComment(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	userId, ok := r.Context().Value(middleware.UserIDKey).(uint)
+	if !ok || userId == 0 {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Route could be /threads/:id/comments
+	idStr := r.URL.Path[len("/threads/") : len(r.URL.Path)-len("/comments")]
+	threadId, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid thread ID", http.StatusBadRequest)
+		return
+	}
+
+	var reqBody struct {
+		Content string `json:"content"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&reqBody); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	var thread models.Thread
+	if err := database.DB.First(&thread, threadId).Error; err != nil {
+		http.Error(w, "Thread not found", http.StatusNotFound)
+		return
+	}
+
+	comment := models.Comment{
+		Content:  reqBody.Content,
+		UserID:   userId,
+		ThreadID: uint(threadId),
+	}
+
+	if err := database.DB.Create(&comment).Error; err != nil {
+		http.Error(w, "Failed to create comment", http.StatusInternalServerError)
+		return
+	}
+
+	// Fetch with User preloaded to return full info
+	database.DB.Preload("User").First(&comment, comment.ID)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(comment)
+}
+
+func UpdateThreadPrompt(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPut {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	userId, ok := r.Context().Value(middleware.UserIDKey).(uint)
+	if !ok || userId == 0 {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	idStr := r.URL.Path[len("/threads/") : len(r.URL.Path)-len("/prompt")]
+	threadId, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid thread ID", http.StatusBadRequest)
+		return
+	}
+
+	var reqBody struct {
+		Content string `json:"content"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&reqBody); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	var thread models.Thread
+	if err := database.DB.Preload("Prompt").First(&thread, threadId).Error; err != nil {
+		http.Error(w, "Thread not found", http.StatusNotFound)
+		return
+	}
+
+	if thread.UserID != userId {
+		http.Error(w, "Forbidden: Only thread author can edit the prompt", http.StatusForbidden)
+		return
+	}
+
+	thread.Prompt.Content = reqBody.Content
+	if err := database.DB.Save(&thread.Prompt).Error; err != nil {
+		http.Error(w, "Failed to update prompt content", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Prompt updated successfully"})
+}

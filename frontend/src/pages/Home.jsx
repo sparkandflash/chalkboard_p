@@ -1,9 +1,14 @@
 import { UserRegistries } from '../components/dashboard/UserRegistries';
 import { RecentThreads } from '../components/dashboard/RecentThreads';
 import { useState, useEffect } from 'react';
+import { useLocation, Link } from 'react-router-dom';
 import api from '../api';
 
 const Home = () => {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const searchQuery = searchParams.get('q');
+
     const [registries, setRegistries] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -32,17 +37,24 @@ const Home = () => {
         const fetchThreads = async () => {
             setIsLoadingThreads(true);
             try {
-                const res = await api.get(`/threads?filter=${filter}&page=${page}&limit=5`);
+                let url = `/threads?filter=${filter}&page=${page}&limit=5`;
+                
+                if (searchQuery) {
+                    url = `/threads/search?q=${encodeURIComponent(searchQuery)}`;
+                }
+
+                const res = await api.get(url);
                 const newThreads = res.data || [];
                 
-                if (page === 1) {
+                if (page === 1 || searchQuery) {
                     setThreads(newThreads);
                 } else {
                     setThreads(prev => [...prev, ...newThreads]);
                 }
                 
-                // If we got fewer than 5, there are no more
-                if (newThreads.length < 5) {
+                if (searchQuery) {
+                    setHasMore(false);
+                } else if (newThreads.length < 5) {
                     setHasMore(false);
                 } else {
                     setHasMore(true);
@@ -54,7 +66,7 @@ const Home = () => {
             }
         };
         fetchThreads();
-    }, [filter, page]);
+    }, [filter, page, searchQuery]);
 
     const handleFilterChange = (newFilter) => {
         if (newFilter !== filter) {
@@ -140,25 +152,27 @@ const Home = () => {
                 
                 <div className="space-y-4">
                     {threads.map(thread => (
-                        <div key={thread.id} className="border bg-card rounded-lg p-2 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
-                            <div>
-                                <div className="flex items-center gap-1">
-                                    <h3 className="font-semibold text-lg">{thread.prompt?.title}</h3>
-                                    <span className="text-muted-foreground text-sm">•</span>
-                                    <span className="text-muted-foreground text-sm">{thread.prompt?.registry?.name}</span>
+                        <Link to={`/thread/${thread.id}`} key={thread.id} className="block border bg-card rounded-lg p-2 shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
+                            <div className="flex flex-col gap-4">
+                                <div>
+                                    <div className="flex items-center gap-1">
+                                        <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{thread.prompt?.title}</h3>
+                                        <span className="text-muted-foreground text-sm">•</span>
+                                        <span className="text-muted-foreground text-sm">{thread.prompt?.registry?.name}</span>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground mt-1">
+                                        <span className="text-neutral-500">by:</span> 
+                                        <span className="text-foreground font-medium"> {thread.userName}</span>
+                                    </p>
                                 </div>
-                                <p className="text-sm text-muted-foreground mt-1">
-                                    <span className="text-neutral-500">by:</span> 
-                                    <span className="text-foreground font-medium"> {thread.userName}</span>
-                                </p>
+                                
+                                <div className="flex items-center gap-2 text-neutral-500 text-sm pt-2">
+                                    <span>Total Replies <span className="text-foreground font-medium">{thread.comments?.length || 0}</span></span>
+                                    <span>•</span>
+                                    <span>Followed by <span className="text-foreground font-medium">{thread.followers?.length || 0}</span></span>
+                                </div>
                             </div>
-                            
-                            <div className="flex items-center gap-2 text-neutral-500 text-sm pt-2">
-                                <span>Total Replies <span className="text-foreground font-medium">{thread.comments?.length || 0}</span></span>
-                                <span>•</span>
-                                <span>Followed by <span className="text-foreground font-medium">{thread.followers?.length || 0}</span></span>
-                            </div>
-                        </div>
+                        </Link>
                     ))}
 
                     {isLoadingThreads && page > 1 && (
