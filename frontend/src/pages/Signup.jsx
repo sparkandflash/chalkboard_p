@@ -25,6 +25,7 @@ const Signup = ({ onSuccess }) => {
 
             localStorage.setItem('auth_token', token);
             localStorage.setItem('user_email', user.email);
+            window.dispatchEvent(new Event('authChange'));
 
             toast.success("Account created successfully!");
             if (onSuccess) onSuccess(user.email);

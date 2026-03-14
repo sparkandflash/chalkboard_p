@@ -40,9 +40,6 @@ const Home = () => {
                 let url = `/threads?filter=${filter}&page=${page}&limit=5`;
                 
                 if (searchQuery) {
-                    // Reset page to 1 for new search if it was handled differently, 
-                    // but here we just use the query for listing. 
-                    // Search doesn't have pagination implemented on backend yet as requested "simple search"
                     url = `/threads/search?q=${encodeURIComponent(searchQuery)}`;
                 }
 
@@ -55,7 +52,6 @@ const Home = () => {
                     setThreads(prev => [...prev, ...newThreads]);
                 }
                 
-                // Pagination logic for normal feed, disable for search for now
                 if (searchQuery) {
                     setHasMore(false);
                 } else if (newThreads.length < 5) {
@@ -90,10 +86,10 @@ const Home = () => {
 
                 {/* Main Content Skeleton */}
                 <div className="lg:col-span-6 space-y-6">
-                    <div className="flex items-center justify-center gap-4 text-md font-medium text-neutral-500 pb-2 border-b">
-                        <span className="cursor-pointer">Latest threads</span>
+                    <div className="flex items-center justify-center gap-4 text-md font-medium text-neutral-500 pb-2 ">
+                        <span className="cursor-pointer">Latest discussions</span>
                         <span>|</span>
-                        <span className="cursor-pointer">Your threads</span>
+                        <span className="cursor-pointer">Your posts</span>
                     </div>
                     <div className="space-y-4">
                         {[1, 2, 3].map(i => (
@@ -137,44 +133,46 @@ const Home = () => {
                         </Link>
                     </div>
                 ) : (
-                    <div className="flex items-center justify-center gap-4 text-md font-medium pb-2 border-b">
+                    <div className="flex items-center justify-center gap-4 text-md font-medium pb-2 ">
                         <button 
                             onClick={() => handleFilterChange('followed')}
                             className={`transition-colors ${filter === 'followed' ? 'text-foreground font-bold' : 'text-neutral-500 hover:text-foreground'}`}
                         >
-                            Latest threads
+                            Latest discussions
                         </button>
                         <span className="text-neutral-300">|</span>
                         <button 
                             onClick={() => handleFilterChange('created')}
                             className={`transition-colors ${filter === 'created' ? 'text-foreground font-bold' : 'text-neutral-500 hover:text-foreground'}`}
                         >
-                            Your threads
+                            Your posts
                         </button>
                     </div>
                 )}
                 
                 <div className="space-y-4">
                     {threads.map(thread => (
-                        <div key={thread.id} className="border bg-card rounded-lg p-2 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
-                            <div>
-                                <div className="flex items-center gap-1">
-                                    <h3 className="font-semibold text-lg">{thread.prompt?.title}</h3>
-                                    <span className="text-muted-foreground text-sm">•</span>
-                                    <span className="text-muted-foreground text-sm">{thread.prompt?.registry?.name}</span>
+                        <Link to={`/thread/${thread.id}`} key={thread.id} className="block border bg-card rounded-lg p-2 shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
+                            <div className="flex flex-col gap-4">
+                                <div>
+                                    <div className="flex items-center gap-1">
+                                        <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{thread.prompt?.title}</h3>
+                                        <span className="text-muted-foreground text-sm">•</span>
+                                        <span className="text-muted-foreground text-sm">{thread.prompt?.registry?.name}</span>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground mt-1">
+                                        <span className="text-neutral-500">by:</span> 
+                                        <span className="text-foreground font-medium"> {thread.userName}</span>
+                                    </p>
                                 </div>
-                                <p className="text-sm text-muted-foreground mt-1">
-                                    <span className="text-neutral-500">by:</span> 
-                                    <span className="text-foreground font-medium"> {thread.userName}</span>
-                                </p>
+                                
+                                <div className="flex items-center gap-2 text-neutral-500 text-sm pt-2">
+                                    <span>Total Replies <span className="text-foreground font-medium">{thread.comments?.length || 0}</span></span>
+                                    <span>•</span>
+                                    <span>Followed by <span className="text-foreground font-medium">{thread.followers?.length || 0}</span></span>
+                                </div>
                             </div>
-                            
-                            <div className="flex items-center gap-2 text-neutral-500 text-sm pt-2">
-                                <span>Total Replies <span className="text-foreground font-medium">{thread.comments?.length || 0}</span></span>
-                                <span>•</span>
-                                <span>Followed by <span className="text-foreground font-medium">{thread.followers?.length || 0}</span></span>
-                            </div>
-                        </div>
+                        </Link>
                     ))}
 
                     {isLoadingThreads && page > 1 && (
@@ -221,3 +219,4 @@ const Home = () => {
 };
 
 export default Home;
+

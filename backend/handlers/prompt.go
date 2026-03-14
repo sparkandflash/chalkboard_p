@@ -40,9 +40,10 @@ func CreatePrompt(w http.ResponseWriter, r *http.Request) {
 
 		// Create default thread
 		defaultThread := models.Thread{
-			UserID:    req.UserID,
-			PromptID:  req.ID,
-			IsDefault: true,
+			UserID:      req.UserID,
+			PromptID:    req.ID,
+			Description: req.Description,
+			IsDefault:   true,
 		}
 		if err := tx.Create(&defaultThread).Error; err != nil {
 			return err

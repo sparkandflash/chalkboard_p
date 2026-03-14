@@ -101,10 +101,32 @@ func main() {
 	// Individual Thread Detail route (e.g., /threads/1)
 	mux.HandleFunc("/threads/", func(w http.ResponseWriter, r *http.Request) {
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if r.Method == http.MethodGet {
+			pathLen := len(r.URL.Path)
+			
+			// Exact match for /threads/{id}
+			if r.Method == http.MethodGet && (pathLen > len("/threads/") && r.URL.Path[pathLen-7:] != "/follow" && r.URL.Path[pathLen-9:] != "/comments" && r.URL.Path[pathLen-7:] != "/prompt") {
 				handlers.GetThreadDetail(w, r)
 				return
 			}
+			
+			// Match for /threads/{id}/follow
+			if r.Method == http.MethodPost && pathLen > len("/follow") && r.URL.Path[pathLen-7:] == "/follow" {
+				handlers.ToggleFollowThread(w, r)
+				return
+			}
+			
+			// Match for /threads/{id}/comments
+			if r.Method == http.MethodPost && pathLen > len("/comments") && r.URL.Path[pathLen-9:] == "/comments" {
+				handlers.CreateComment(w, r)
+				return
+			}
+			
+			// Match for /threads/{id}/prompt
+			if r.Method == http.MethodPut && pathLen > len("/prompt") && r.URL.Path[pathLen-7:] == "/prompt" {
+				handlers.UpdateThreadPrompt(w, r)
+				return
+			}
+
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		})
 		middleware.LoggingMiddleware(middleware.AuthMiddleware(handler)).ServeHTTP(w, r)
