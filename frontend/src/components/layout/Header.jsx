@@ -27,6 +27,15 @@ export const Header = () => {
         };
     }, []);
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const query = formData.get('search');
+        if (query && query.trim()) {
+            navigate(`/?q=${encodeURIComponent(query.trim())}`);
+        }
+    };
+
     // Shared border thickness (px) — single source of truth
     const borderWeight = '3.5px';
     const borderColor = 'currentColor'; // inherits text color (foreground)
