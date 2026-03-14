@@ -1007,3 +1007,185 @@ ERROR: 2026/03/13 00:39:45 logging.go:36: Token validation error: token has inva
 INFO: 2026/03/13 00:39:45 logging.go:29: Completed GET /registries Status: Unauthorized Duration: 92.292µs
 INFO: 2026/03/13 00:39:45 logging.go:29: Started GET /registries
 INFO: 2026/03/13 00:39:45 logging.go:29: Completed GET /registries Status: OK Duration: 12.59175ms
+INFO: 2026/03/14 12:37:15 logging.go:29: Server starting on :8080...
+INFO: 2026/03/14 12:38:58 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:38:59 logging.go:29: Completed GET /threads Status: OK Duration: 737.800875ms
+INFO: 2026/03/14 12:39:00 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:39:03 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:39:03 logging.go:29: Completed GET /threads Status: OK Duration: 3.413596917s
+INFO: 2026/03/14 12:39:05 logging.go:29: Completed GET /threads Status: OK Duration: 2.131862667s
+INFO: 2026/03/14 12:39:10 logging.go:29: Started POST /login
+ERROR: 2026/03/14 12:39:11 logging.go:36: Invalid password: crypto/bcrypt: hashedPassword is not the hash of the given password
+INFO: 2026/03/14 12:39:11 logging.go:29: Completed POST /login Status: Unauthorized Duration: 777.44075ms
+INFO: 2026/03/14 12:39:21 logging.go:29: Started POST /login
+INFO: 2026/03/14 12:39:21 logging.go:29: Completed POST /login Status: OK Duration: 566.919625ms
+INFO: 2026/03/14 12:39:21 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:39:21 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:39:22 logging.go:29: Completed GET /threads Status: OK Duration: 477.217875ms
+INFO: 2026/03/14 12:39:22 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:39:22 logging.go:29: Completed GET /threads Status: OK Duration: 238.987333ms
+INFO: 2026/03/14 12:39:22 logging.go:29: Completed GET /registries Status: OK Duration: 935.293209ms
+INFO: 2026/03/14 12:39:22 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:39:22 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 12:39:23 logging.go:29: Completed GET /registries Status: OK Duration: 468.28275ms
+INFO: 2026/03/14 12:39:23 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:39:23 logging.go:29: Completed GET /recent-threads Status: OK Duration: 478.36325ms
+INFO: 2026/03/14 12:39:23 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 12:39:23 logging.go:29: Completed GET /recent-threads Status: OK Duration: 239.500083ms
+INFO: 2026/03/14 12:39:23 logging.go:29: Completed GET /registries Status: OK Duration: 467.308292ms
+INFO: 2026/03/14 12:39:23 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:39:23 logging.go:29: Completed GET /registries Status: OK Duration: 468.236291ms
+INFO: 2026/03/14 12:39:28 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:39:30 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:39:31 logging.go:29: Completed GET /threads Status: OK Duration: 804.3155ms
+INFO: 2026/03/14 12:39:32 logging.go:29: Completed GET /threads Status: OK Duration: 4.223284459s
+INFO: 2026/03/14 12:39:32 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:39:33 logging.go:29: Completed GET /threads Status: OK Duration: 1.638313541s
+INFO: 2026/03/14 12:43:15 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:15 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:43:15 logging.go:29: Completed GET /threads Status: OK Duration: 523.678958ms
+INFO: 2026/03/14 12:43:15 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:15 logging.go:29: Completed GET /registries Status: OK Duration: 717.550291ms
+INFO: 2026/03/14 12:43:15 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:43:15 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 12:43:15 logging.go:29: Completed GET /threads Status: OK Duration: 255.062083ms
+INFO: 2026/03/14 12:43:16 logging.go:29: Completed GET /registries Status: OK Duration: 471.440334ms
+INFO: 2026/03/14 12:43:16 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:43:16 logging.go:29: Completed GET /registries Status: OK Duration: 466.928667ms
+INFO: 2026/03/14 12:43:16 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:43:17 logging.go:29: Completed GET /registries Status: OK Duration: 466.608292ms
+INFO: 2026/03/14 12:43:18 logging.go:29: Completed GET /recent-threads Status: OK Duration: 2.195269667s
+INFO: 2026/03/14 12:43:18 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 12:43:18 logging.go:29: Completed GET /recent-threads Status: OK Duration: 699.949708ms
+INFO: 2026/03/14 12:43:21 logging.go:29: Started POST /login
+INFO: 2026/03/14 12:43:22 logging.go:29: Completed POST /login Status: OK Duration: 541.136958ms
+INFO: 2026/03/14 12:43:22 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:43:22 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:22 logging.go:29: Completed GET /registries Status: OK Duration: 465.152625ms
+INFO: 2026/03/14 12:43:22 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:43:22 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 12:43:22 logging.go:29: Completed GET /threads Status: OK Duration: 526.607083ms
+INFO: 2026/03/14 12:43:22 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:23 logging.go:29: Completed GET /threads Status: OK Duration: 255.400709ms
+INFO: 2026/03/14 12:43:23 logging.go:29: Completed GET /registries Status: OK Duration: 467.87325ms
+INFO: 2026/03/14 12:43:23 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:43:23 logging.go:29: Completed GET /registries Status: OK Duration: 469.777792ms
+INFO: 2026/03/14 12:43:23 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:43:24 logging.go:29: Completed GET /registries Status: OK Duration: 467.339208ms
+INFO: 2026/03/14 12:43:25 logging.go:29: Completed GET /recent-threads Status: OK Duration: 2.221445208s
+INFO: 2026/03/14 12:43:25 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 12:43:25 logging.go:29: Completed GET /recent-threads Status: OK Duration: 466.11325ms
+INFO: 2026/03/14 12:43:28 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:30 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:30 logging.go:29: Completed GET /threads Status: OK Duration: 1.874067875s
+INFO: 2026/03/14 12:43:30 logging.go:29: Completed GET /threads Status: OK Duration: 510.484542ms
+INFO: 2026/03/14 12:43:31 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:33 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:33 logging.go:29: Completed GET /threads Status: OK Duration: 466.96325ms
+INFO: 2026/03/14 12:43:33 logging.go:29: Completed GET /threads Status: OK Duration: 2.054880292s
+INFO: 2026/03/14 12:43:35 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:37 logging.go:29: Completed GET /threads Status: OK Duration: 2.046549667s
+INFO: 2026/03/14 12:43:40 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:40 logging.go:29: Completed GET /threads Status: OK Duration: 508.803584ms
+INFO: 2026/03/14 12:43:42 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:44 logging.go:29: Completed GET /threads Status: OK Duration: 2.045015959s
+INFO: 2026/03/14 12:43:46 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:47 logging.go:29: Completed GET /threads Status: OK Duration: 513.046042ms
+INFO: 2026/03/14 12:43:49 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:43:51 logging.go:29: Completed GET /threads Status: OK Duration: 2.044660958s
+INFO: 2026/03/14 12:47:11 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:47:11 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:47:12 logging.go:29: Completed GET /registries Status: OK Duration: 1.248979833s
+INFO: 2026/03/14 12:47:13 logging.go:29: Completed GET /threads Status: OK Duration: 1.881854958s
+INFO: 2026/03/14 12:48:45 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:48:45 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:48:45 logging.go:29: Completed GET /registries Status: OK Duration: 702.095959ms
+INFO: 2026/03/14 12:48:47 logging.go:29: Completed GET /threads Status: OK Duration: 1.987386417s
+INFO: 2026/03/14 12:48:54 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:48:55 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:48:56 logging.go:29: Completed GET /threads Status: OK Duration: 1.170427292s
+INFO: 2026/03/14 12:48:57 logging.go:29: Completed GET /threads Status: OK Duration: 2.047846667s
+INFO: 2026/03/14 12:49:31 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 12:49:31 logging.go:29: Completed GET /recent-threads Status: OK Duration: 486.987333ms
+INFO: 2026/03/14 12:49:37 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:49:38 logging.go:29: Completed GET /registries Status: OK Duration: 739.765583ms
+INFO: 2026/03/14 12:49:42 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:49:42 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:49:43 logging.go:29: Completed GET /threads Status: OK Duration: 504.214667ms
+INFO: 2026/03/14 12:49:43 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:49:43 logging.go:29: Completed GET /registries Status: OK Duration: 711.392292ms
+INFO: 2026/03/14 12:49:43 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:49:43 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 12:49:43 logging.go:29: Completed GET /threads Status: OK Duration: 247.875292ms
+INFO: 2026/03/14 12:49:43 logging.go:29: Completed GET /registries Status: OK Duration: 468.07175ms
+INFO: 2026/03/14 12:49:43 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:49:44 logging.go:29: Completed GET /registries Status: OK Duration: 473.285083ms
+INFO: 2026/03/14 12:49:44 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:49:44 logging.go:29: Completed GET /registries Status: OK Duration: 467.338667ms
+INFO: 2026/03/14 12:49:46 logging.go:29: Completed GET /recent-threads Status: OK Duration: 2.68147825s
+INFO: 2026/03/14 12:49:46 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 12:49:46 logging.go:29: Completed GET /recent-threads Status: OK Duration: 468.411084ms
+INFO: 2026/03/14 12:49:59 logging.go:29: Started GET /registries
+INFO: 2026/03/14 12:50:00 logging.go:29: Completed GET /registries Status: OK Duration: 700.154166ms
+INFO: 2026/03/14 12:50:17 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 12:50:17 logging.go:29: Completed GET /recent-threads Status: OK Duration: 467.570334ms
+INFO: 2026/03/14 12:50:28 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:50:30 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:50:30 logging.go:29: Completed GET /threads Status: OK Duration: 1.954780584s
+INFO: 2026/03/14 12:50:31 logging.go:29: Completed GET /threads Status: OK Duration: 524.541833ms
+INFO: 2026/03/14 12:50:35 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:50:36 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:50:36 logging.go:29: Completed GET /threads Status: OK Duration: 682.445875ms
+INFO: 2026/03/14 12:50:37 logging.go:29: Completed GET /threads Status: OK Duration: 2.155653542s
+INFO: 2026/03/14 12:50:37 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:50:38 logging.go:29: Started GET /threads
+INFO: 2026/03/14 12:50:39 logging.go:29: Completed GET /threads Status: OK Duration: 746.314708ms
+INFO: 2026/03/14 12:50:39 logging.go:29: Completed GET /threads Status: OK Duration: 2.044979375s
+INFO: 2026/03/14 13:05:31 logging.go:29: Started GET /registries
+INFO: 2026/03/14 13:05:31 logging.go:29: Started GET /threads
+INFO: 2026/03/14 13:05:32 logging.go:29: Completed GET /threads Status: OK Duration: 486.458125ms
+INFO: 2026/03/14 13:05:32 logging.go:29: Started GET /threads
+INFO: 2026/03/14 13:05:32 logging.go:29: Completed GET /threads Status: OK Duration: 232.707458ms
+INFO: 2026/03/14 13:05:32 logging.go:29: Completed GET /registries Status: OK Duration: 741.615125ms
+INFO: 2026/03/14 13:05:32 logging.go:29: Started GET /registries
+INFO: 2026/03/14 13:05:32 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 13:05:32 logging.go:29: Completed GET /recent-threads Status: OK Duration: 232.775125ms
+INFO: 2026/03/14 13:05:32 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 13:05:32 logging.go:29: Completed GET /registries Status: OK Duration: 492.071417ms
+INFO: 2026/03/14 13:05:32 logging.go:29: Started GET /registries
+INFO: 2026/03/14 13:05:33 logging.go:29: Completed GET /recent-threads Status: OK Duration: 231.575917ms
+INFO: 2026/03/14 13:05:33 logging.go:29: Completed GET /registries Status: OK Duration: 485.680458ms
+INFO: 2026/03/14 13:05:33 logging.go:29: Started GET /registries
+INFO: 2026/03/14 13:05:33 logging.go:29: Completed GET /registries Status: OK Duration: 491.108917ms
+INFO: 2026/03/14 13:11:47 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 13:11:48 logging.go:29: Completed GET /recent-threads Status: OK Duration: 510.594917ms
+INFO: 2026/03/14 13:12:01 logging.go:29: Started GET /recent-threads
+INFO: 2026/03/14 13:12:02 logging.go:29: Completed GET /recent-threads Status: OK Duration: 476.959584ms
+INFO: 2026/03/14 13:12:12 logging.go:29: Started GET /registries
+INFO: 2026/03/14 13:12:12 logging.go:29: Started GET /threads
+INFO: 2026/03/14 13:12:13 logging.go:29: Completed GET /threads Status: OK Duration: 456.064875ms
+INFO: 2026/03/14 13:12:13 logging.go:29: Completed GET /registries Status: OK Duration: 718.95575ms
+INFO: 2026/03/14 13:12:14 logging.go:29: Started GET /registries
+INFO: 2026/03/14 13:12:14 logging.go:29: Started GET /threads
+INFO: 2026/03/14 13:12:15 logging.go:29: Completed GET /threads Status: OK Duration: 509.033542ms
+INFO: 2026/03/14 13:12:15 logging.go:29: Completed GET /registries Status: OK Duration: 811.123875ms
+INFO: 2026/03/14 13:12:29 logging.go:29: Started GET /threads
+INFO: 2026/03/14 13:12:29 logging.go:29: Started GET /registries
+INFO: 2026/03/14 13:12:30 logging.go:29: Completed GET /threads Status: OK Duration: 487.546083ms
+INFO: 2026/03/14 13:12:30 logging.go:29: Completed GET /registries Status: OK Duration: 725.978292ms
+INFO: 2026/03/14 13:12:41 logging.go:29: Started GET /threads
+INFO: 2026/03/14 13:12:41 logging.go:29: Started GET /registries
+INFO: 2026/03/14 13:12:42 logging.go:29: Completed GET /threads Status: OK Duration: 548.536917ms
+INFO: 2026/03/14 13:12:42 logging.go:29: Completed GET /registries Status: OK Duration: 786.159625ms
+INFO: 2026/03/14 13:12:57 logging.go:29: Started GET /threads
+INFO: 2026/03/14 13:12:57 logging.go:29: Started GET /registries
+INFO: 2026/03/14 13:12:58 logging.go:29: Completed GET /threads Status: OK Duration: 504.846458ms
+INFO: 2026/03/14 13:12:58 logging.go:29: Completed GET /registries Status: OK Duration: 799.2345ms
+INFO: 2026/03/14 13:13:49 logging.go:29: Started GET /threads
+INFO: 2026/03/14 13:13:49 logging.go:29: Started GET /registries
+INFO: 2026/03/14 13:13:50 logging.go:29: Completed GET /threads Status: OK Duration: 455.441333ms
+INFO: 2026/03/14 13:13:50 logging.go:29: Completed GET /registries Status: OK Duration: 710.03025ms
+INFO: 2026/03/14 13:13:54 logging.go:29: Started GET /registries
+INFO: 2026/03/14 13:13:54 logging.go:29: Started GET /threads
+INFO: 2026/03/14 13:13:55 logging.go:29: Completed GET /threads Status: OK Duration: 452.232417ms
+INFO: 2026/03/14 13:13:55 logging.go:29: Completed GET /registries Status: OK Duration: 711.575167ms
