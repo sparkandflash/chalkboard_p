@@ -232,6 +232,16 @@ export const ThreadDetail = () => {
                      <span><span className="text-foreground font-medium">{thread.prompt?.content?.length || 0}</span> chars</span>
                      <span>•</span>
                      <span>~<span className="text-foreground font-medium">{Math.ceil((thread.prompt?.content?.length || 0) / 4)}</span> tokens</span>
+                     <span>•</span>
+                     <button
+                         className="text-primary hover:underline"
+                         onClick={() => {
+                             const publicUrl = `${window.location.origin}/p/${id}`;
+                             navigator.clipboard.writeText(publicUrl);
+                         }}
+                     >
+                         Share
+                     </button>
                 </div>
 
                 {/* Comments Section */}

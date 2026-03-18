@@ -32,7 +32,11 @@ export const Header = () => {
         const formData = new FormData(e.target);
         const query = formData.get('search');
         if (query && query.trim()) {
-            navigate(`/?q=${encodeURIComponent(query.trim())}`);
+            if (isLoggedIn) {
+                navigate(`/?q=${encodeURIComponent(query.trim())}`);
+            } else {
+                navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+            }
         }
     };
 

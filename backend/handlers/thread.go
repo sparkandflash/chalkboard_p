@@ -147,6 +147,43 @@ func GetThreadDetail(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(thread)
 }
 
+func GetPublicThread(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	idStr := r.URL.Path[len("/p/"):]
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid thread ID", http.StatusBadRequest)
+		return
+	}
+
+	var thread models.Thread
+	err = database.DB.Preload("Prompt").
+		Preload("Prompt.User").
+		Preload("Prompt.Registry").
+		Preload("User").
+		Preload("Comments").
+		Preload("Comments.User").
+		First(&thread, id).Error
+
+	if err != nil {
+		http.Error(w, "Thread not found", http.StatusNotFound)
+		return
+	}
+
+	thread.UserName = thread.User.Username
+	if thread.UserName == "" {
+		thread.UserName = "Anonymous"
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(thread)
+}
+
 func SearchThreads(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
