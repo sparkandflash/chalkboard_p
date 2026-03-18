@@ -117,7 +117,7 @@ func main() {
 			}
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		})
-		middleware.LoggingMiddleware(middleware.AuthMiddleware(handler)).ServeHTTP(w, r)
+		middleware.LoggingMiddleware(handler).ServeHTTP(w, r) // Public: no auth required
 	})
 
 	// Individual Thread Detail route (e.g., /threads/1)
@@ -152,6 +152,15 @@ func main() {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		})
 		middleware.LoggingMiddleware(middleware.AuthMiddleware(handler)).ServeHTTP(w, r)
+	})
+
+	// Public thread view (no auth required)
+	mux.HandleFunc("/p/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			middleware.LoggingMiddleware(http.HandlerFunc(handlers.GetPublicThread)).ServeHTTP(w, r)
+			return
+		}
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	})
 
 	mux.HandleFunc("/recent-threads", func(w http.ResponseWriter, r *http.Request) {

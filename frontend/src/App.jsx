@@ -11,6 +11,8 @@ import CreatePrompt from './pages/CreatePrompt'
 import ThreadDetail from './pages/ThreadDetail'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import PublicThread from './pages/PublicThread'
+import PublicSearch from './pages/PublicSearch'
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -61,6 +63,10 @@ function App() {
                   <CreatePrompt />
                 </ProtectedRoute>
               } />
+
+              {/* Public routes — no auth required */}
+              <Route path="/p/:id" element={<PublicThread />} />
+              <Route path="/search" element={<PublicSearch />} />
             </Routes>
           </div>
           <Footer />
