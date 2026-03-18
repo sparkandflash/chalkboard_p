@@ -76,3 +76,49 @@ func GetPrompts(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(prompts)
 }
+
+func DeletePrompt(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodDelete {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	userID, ok := r.Context().Value(middleware.UserIDKey).(uint)
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	idStr := r.PathValue("id")
+	if idStr == "" {
+		// Fallback for older Go or manual parsing if using manual routing
+		pathLen := len(r.URL.Path)
+		if pathLen > len("/prompts/") {
+			idStr = r.URL.Path[len("/prompts/"):]
+		}
+	}
+
+	if idStr == "" {
+		http.Error(w, "Missing prompt ID", http.StatusBadRequest)
+		return
+	}
+
+	var prompt models.Prompt
+	if err := database.DB.First(&prompt, idStr).Error; err != nil {
+		http.Error(w, "Prompt not found", http.StatusNotFound)
+		return
+	}
+
+	if prompt.UserID != userID {
+		http.Error(w, "Unauthorized to delete this prompt", http.StatusForbidden)
+		return
+	}
+
+	if err := database.DB.Delete(&prompt).Error; err != nil {
+		http.Error(w, "Failed to delete prompt", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Prompt deleted successfully"})
+}

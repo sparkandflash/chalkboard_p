@@ -1,7 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Copy, Tag } from 'lucide-react';
 import { toast } from "sonner"
 
 export const PromptCard = ({ prompt }) => {
@@ -23,9 +22,12 @@ export const PromptCard = ({ prompt }) => {
                             </span>
                         </div>
                     </div>
-                    <Button variant="outline" size="sm" onClick={() => copyToClipboard(prompt.content)}>
-                        <Copy className="h-4 w-4 mr-1" /> Copy
-                    </Button>
+                    <button 
+                        className="text-sm font-medium text-primary hover:underline mt-2" 
+                        onClick={() => copyToClipboard(prompt.content)}
+                    >
+                        Copy
+                    </button>
                 </div>
             </CardHeader>
             <CardContent>
@@ -42,7 +44,6 @@ export const PromptCard = ({ prompt }) => {
                 <div className="flex flex-wrap gap-2">
                     {prompt.tags && prompt.tags.split(',').map((tag, i) => (
                         <Badge key={i} variant="outline" className="text-xs">
-                            <Tag className="h-3 w-3 mr-1" />
                             {tag.trim()}
                         </Badge>
                     ))}

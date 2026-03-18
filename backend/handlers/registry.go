@@ -58,3 +58,49 @@ func GetUserRegistries(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(registries)
 }
+
+func DeleteRegistry(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodDelete {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	userID, ok := r.Context().Value(middleware.UserIDKey).(uint)
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	idStr := r.PathValue("id")
+	if idStr == "" {
+		// Fallback for older Go or manual parsing if using manual routing
+		pathLen := len(r.URL.Path)
+		if pathLen > len("/registries/") {
+			idStr = r.URL.Path[len("/registries/"):]
+		}
+	}
+
+	if idStr == "" {
+		http.Error(w, "Missing registry ID", http.StatusBadRequest)
+		return
+	}
+
+	var registry models.Registry
+	if err := database.DB.First(&registry, idStr).Error; err != nil {
+		http.Error(w, "Registry not found", http.StatusNotFound)
+		return
+	}
+
+	if registry.UserID != userID {
+		http.Error(w, "Unauthorized to delete this registry", http.StatusForbidden)
+		return
+	}
+
+	if err := database.DB.Delete(&registry).Error; err != nil {
+		http.Error(w, "Failed to delete registry", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Registry deleted successfully"})
+}
