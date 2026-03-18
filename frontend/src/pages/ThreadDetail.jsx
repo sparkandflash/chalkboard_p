@@ -228,14 +228,21 @@ export const ThreadDetail = () => {
                      <span>Total Replies <span className="text-foreground font-medium">{comments.length}</span></span>
                      <span>•</span>
                      <span>Followed by <span className="text-foreground font-medium">{isFollowing ? (thread.followers?.length || 0) + 1 : (thread.followers?.length || 0)}</span></span>
+                     <span>•</span>
+                     <span><span className="text-foreground font-medium">{thread.prompt?.content?.length || 0}</span> chars</span>
+                     <span>•</span>
+                     <span>~<span className="text-foreground font-medium">{Math.ceil((thread.prompt?.content?.length || 0) / 4)}</span> tokens</span>
                 </div>
 
                 {/* Comments Section */}
-                <div className="space-y-4 pt-2">
-                     {comments.map((comment) => (
-                         <div key={comment.id} className="py-2 border-b border-border/30 last:border-0 hover:bg-muted/20 transition-colors px-2 rounded-md">
-                             <p className="text-sm font-medium mb-1">{comment.userName || comment.user?.username || 'Anonymous'}</p>
-                             <p className="text-sm text-foreground/80">{comment.content}</p>
+                 <div className="pt-2">
+                     {comments.map((comment, index) => (
+                         <div key={comment.id}>
+                             {index > 0 && <hr className="border-neutral-300 dark:border-neutral-600" />}
+                             <div className="py-3 hover:bg-muted/20 transition-colors px-2 rounded-md">
+                                 <p className="text-sm font-medium mb-1">{comment.userName || comment.user?.username || 'Anonymous'}</p>
+                                 <p className="text-sm text-foreground/80">{comment.content}</p>
+                             </div>
                          </div>
                      ))}
                      

@@ -59,6 +59,17 @@ func main() {
 		middleware.LoggingMiddleware(middleware.AuthMiddleware(handler)).ServeHTTP(w, r)
 	})
 
+	mux.HandleFunc("/registries/", func(w http.ResponseWriter, r *http.Request) {
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.Method == http.MethodDelete {
+				handlers.DeleteRegistry(w, r)
+				return
+			}
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		})
+		middleware.LoggingMiddleware(middleware.AuthMiddleware(handler)).ServeHTTP(w, r)
+	})
+
 	// Prompt Handlers
 	mux.HandleFunc("/prompts", func(w http.ResponseWriter, r *http.Request) {
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -73,6 +84,17 @@ func main() {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		})
 		middleware.LoggingMiddleware(handler).ServeHTTP(w, r)
+	})
+
+	mux.HandleFunc("/prompts/", func(w http.ResponseWriter, r *http.Request) {
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.Method == http.MethodDelete {
+				handlers.DeletePrompt(w, r)
+				return
+			}
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		})
+		middleware.LoggingMiddleware(middleware.AuthMiddleware(handler)).ServeHTTP(w, r)
 	})
 
 	// Thread Handlers

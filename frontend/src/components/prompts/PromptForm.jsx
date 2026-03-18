@@ -21,6 +21,9 @@ export const PromptForm = ({ registries = [], initialValues = {}, onSubmit, isLo
     const [version, setVersion] = useState(initialValues.version || '1.0.0');
     const [selectedRegistry, setSelectedRegistry] = useState(initialValues.registryId ? initialValues.registryId.toString() : '');
 
+    const CHAR_LIMIT = 4000;
+    const estimatedTokens = Math.ceil(content.length / 4);
+
     // Update selectedRegistry when initialValues change
     useEffect(() => {
         if (initialValues.registryId) {
@@ -91,14 +94,21 @@ export const PromptForm = ({ registries = [], initialValues = {}, onSubmit, isLo
                         id="content"
                         placeholder="Enter your prompt template here..."
                         value={content}
-                        onChange={(e) => setContent(e.target.value)}
+                        onChange={(e) => {
+                            if (e.target.value.length <= CHAR_LIMIT) {
+                                setContent(e.target.value);
+                            }
+                        }}
                         rows={8}
                         className="font-mono text-sm resize-y"
                         required
                     />
-                    <div className="absolute bottom-2 right-2 text-xs text-muted-foreground">
-                        Supports Markdown
-                    </div>
+                </div>
+                <div className="flex justify-between items-center text-xs text-muted-foreground mt-1">
+                    <span>~{estimatedTokens} estimated tokens</span>
+                    <span className={content.length >= CHAR_LIMIT - 200 ? 'text-destructive font-medium' : ''}>
+                        {content.length} / {CHAR_LIMIT} chars
+                    </span>
                 </div>
             </div>
 

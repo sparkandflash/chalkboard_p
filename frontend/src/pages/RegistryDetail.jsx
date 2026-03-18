@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Plus } from 'lucide-react';
 import api from '../api';
 
 import { toast } from "sonner"
 import { PromptSkeleton } from "@/components/skeletons/PromptSkeleton"
-import { PromptCard } from "@/components/prompts/PromptCard";
 
 const RegistryDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [registry, setRegistry] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isManaging, setIsManaging] = useState(false);
 
     useEffect(() => {
         const fetchRegistry = async () => {
@@ -40,18 +40,61 @@ const RegistryDetail = () => {
         fetchRegistry();
     }, [id]);
 
+    const handleDeleteRegistry = async () => {
+        if (!window.confirm("Are you sure you want to delete this registry? This action cannot be undone.")) return;
+        
+        try {
+            await api.delete(`/registries/${id}`);
+            toast.success("Registry deleted successfully");
+            navigate('/');
+        } catch (error) {
+            console.error("Failed to delete registry", error);
+            toast.error("Failed to delete registry");
+        }
+    };
+
+    const handleDeletePrompt = async (e, promptId) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!window.confirm("Are you sure you want to delete this prompt?")) return;
+
+        try {
+            await api.delete(`/prompts/${promptId}`);
+            setRegistry(prev => ({
+                ...prev,
+                prompts: prev.prompts.filter(p => p.id !== promptId)
+            }));
+            toast.success("Prompt deleted successfully");
+        } catch (error) {
+            console.error("Failed to delete prompt", error);
+            toast.error("Failed to delete prompt");
+        }
+    };
+
     if (isLoading) {
         return (
-            <div className="space-y-8">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div>
-                        <div className="h-4 w-24 bg-muted animate-pulse mb-2 rounded"></div>
-                        <div className="h-8 w-64 bg-muted animate-pulse rounded"></div>
-                        <div className="h-4 w-96 bg-muted animate-pulse mt-2 rounded"></div>
+            <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div className="lg:col-span-9 space-y-8">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div className="w-full">
+                            <div className="h-4 w-24 bg-muted animate-pulse mb-6 rounded"></div>
+                            
+                            <div className="flex items-center justify-between w-full">
+                                <div className="flex items-center gap-4">
+                                    <div className="h-8 w-64 bg-muted animate-pulse rounded"></div>
+                                    <div className="h-8 w-20 bg-muted animate-pulse rounded"></div>
+                                </div>
+                                <div className="h-10 w-32 bg-muted animate-pulse rounded"></div>
+                            </div>
+                            <div className="h-4 w-96 bg-muted animate-pulse mt-2 rounded"></div>
+                        </div>
                     </div>
-                    <div className="h-10 w-32 bg-muted animate-pulse rounded"></div>
+                    <PromptSkeleton />
                 </div>
-                <PromptSkeleton />
+                
+                {/* Right Side Skeleton Space */}
+                <div className="hidden lg:block lg:col-span-3 sticky top-6">
+                </div>
             </div>
         );
     }
@@ -66,35 +109,88 @@ const RegistryDetail = () => {
     }
 
     return (
-        <div className="space-y-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-6">
-                <div>
-                    <Link to="/" className="text-muted-foreground hover:text-foreground flex items-center mb-2 text-sm">
-                        <ArrowLeft className="h-4 w-4 mr-1" /> Back to Registries
-                    </Link>
-                    <h2 className="text-3xl font-bold tracking-tight text-foreground">{registry.name}</h2>
-                    <p className="text-muted-foreground mt-2">{registry.description}</p>
+        <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* 80% Left Side (Span 9 columns out of 12) */}
+            <div className="lg:col-span-9 space-y-8">
+                {/* Header Area */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-6">
+                    <div className="w-full">
+                        <Link to="/" className="text-muted-foreground hover:text-foreground hover:underline flex items-center mb-2 text-sm w-fit">
+                            Back to Home
+                        </Link>
+                        
+                        <div className="flex items-center justify-between w-full">
+                            <div className="flex items-center gap-4">
+                                <h2 className="text-3xl font-bold tracking-tight text-foreground">{registry.name}</h2>
+                                {isManaging && (
+                                    <button 
+                                        className="text-sm font-medium text-destructive hover:underline" 
+                                        onClick={handleDeleteRegistry}
+                                    >
+                                        Delete Registry
+                                    </button>
+                                )}
+                                <button 
+                                    className="text-sm font-medium text-foreground hover:underline"
+                                    onClick={() => setIsManaging(!isManaging)}
+                                >
+                                    {isManaging ? "Done" : "Manage"}
+                                </button>
+                            </div>
+                            <Link 
+                                to={`/create-prompt?registryId=${registry.id}`} 
+                                className={`text-sm font-medium text-primary hover:underline ${isManaging ? 'opacity-50 pointer-events-none' : ''}`}
+                            >
+                                Add Prompt
+                            </Link>
+                        </div>
+                        <p className="text-muted-foreground mt-2">{registry.description}</p>
+                    </div>
                 </div>
-                <Link to={`/create-prompt?registryId=${registry.id}`}>
-                    <Button size="lg">
-                        <Plus className="mr-2 h-5 w-5" /> Add Prompt
-                    </Button>
-                </Link>
+
+                {/* Prompts List */}
+                <div className="grid grid-cols-1 gap-4">
+                    {registry.prompts && registry.prompts.length > 0 ? (
+                        registry.prompts.map((prompt) => (
+                            <Link 
+                                key={prompt.id} 
+                                to={`/thread/${prompt.threadId}`} // Assuming prompt has a threadId, otherwise we might need to fetch it or rely on the backend attaching it. If it doesn't, this link might need adjustment.
+                                className="block group transition-transform"
+                            >
+                                <div className="border border-border/50 rounded-lg p-5 bg-card hover:bg-muted/10 transition-colors shadow-sm cursor-pointer relative group/card">
+                                    <div className="flex justify-between items-start">
+                                        <h3 className="text-lg font-semibold group-hover:text-primary transition-colors mb-2 pr-6">{prompt.title}</h3>
+                                        {isManaging && (
+                                            <button 
+                                                onClick={(e) => handleDeletePrompt(e, prompt.id)}
+                                                className="text-xs font-medium text-muted-foreground hover:text-destructive hover:underline absolute top-5 right-5 z-10"
+                                                aria-label="Delete prompt"
+                                            >
+                                                Delete
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className="flex items-center text-xs text-neutral-500">
+                                        {prompt.version && <span className="mr-3">v{prompt.version}</span>}
+                                        {prompt.UpdatedAt && <span>Updated {new Date(prompt.UpdatedAt).toLocaleDateString()}</span>}
+                                    </div>
+                                </div>
+                            </Link>
+                        ))
+                    ) : (
+                        <div className="text-center py-12 bg-muted/5 rounded-lg border border-dashed">
+                            <p className="text-muted-foreground mb-4">No prompts in this registry yet.</p>
+                            <Link to={`/create-prompt?registryId=${registry.id}`} className="text-sm font-medium text-primary hover:underline">
+                                Create your first prompt
+                            </Link>
+                        </div>
+                    )}
+                </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-6">
-                {registry.prompts && registry.prompts.length > 0 ? (
-                    registry.prompts.map((prompt) => (
-                        <PromptCard key={prompt.id} prompt={prompt} />
-                    ))
-                ) : (
-                    <div className="text-center py-12 bg-muted/10 rounded-lg border-2 border-dashed">
-                        <p className="text-muted-foreground">No prompts in this registry yet.</p>
-                        <Link to={`/create-prompt?registryId=${registry.id}`} className="mt-4 inline-block">
-                            <Button size="lg">Create your first prompt</Button>
-                        </Link>
-                    </div>
-                )}
+            {/* 20% Right Side (Negative Space / Span 3 columns) */}
+            <div className="hidden lg:block lg:col-span-3 sticky top-6">
+                {/* Intentionally left blank for negative space as requested */}
             </div>
         </div>
     );
