@@ -7,6 +7,8 @@ import (
 	"backend/database"
 	"backend/middleware"
 	"backend/models"
+
+	"gorm.io/gorm"
 )
 
 type CreateRegistryRequest struct {
@@ -96,7 +98,26 @@ func DeleteRegistry(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := database.DB.Delete(&registry).Error; err != nil {
+	// Cascade soft-delete: threads → prompts → registry, all in one transaction
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
+		// 1. Soft-delete all threads whose prompt belongs to this registry
+		if err := tx.Where(
+			"prompt_id IN (SELECT id FROM prompts WHERE registry_id = ? AND deleted_at IS NULL)",
+			registry.ID,
+		).Delete(&models.Thread{}).Error; err != nil {
+			return err
+		}
+
+		// 2. Soft-delete all prompts in this registry
+		if err := tx.Where("registry_id = ?", registry.ID).Delete(&models.Prompt{}).Error; err != nil {
+			return err
+		}
+
+		// 3. Soft-delete the registry itself
+		return tx.Delete(&registry).Error
+	})
+
+	if err != nil {
 		http.Error(w, "Failed to delete registry", http.StatusInternalServerError)
 		return
 	}

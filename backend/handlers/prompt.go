@@ -114,7 +114,17 @@ func DeletePrompt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := database.DB.Delete(&prompt).Error; err != nil {
+	// Cascade soft-delete: threads → prompt, in a transaction
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
+		// 1. Soft-delete all threads linked to this prompt
+		if err := tx.Where("prompt_id = ?", prompt.ID).Delete(&models.Thread{}).Error; err != nil {
+			return err
+		}
+		// 2. Soft-delete the prompt itself
+		return tx.Delete(&prompt).Error
+	})
+
+	if err != nil {
 		http.Error(w, "Failed to delete prompt", http.StatusInternalServerError)
 		return
 	}

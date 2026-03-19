@@ -36,6 +36,8 @@ func GetThreads(w http.ResponseWriter, r *http.Request) {
 
 	var threads []models.Thread
 	query := database.DB.Model(&models.Thread{}).
+		Joins("JOIN prompts ON prompts.id = threads.prompt_id AND prompts.deleted_at IS NULL").
+		Joins("JOIN registries ON registries.id = prompts.registry_id AND registries.deleted_at IS NULL").
 		Preload("Prompt").
 		Preload("Prompt.User").
 		Preload("Prompt.Registry").
@@ -198,7 +200,8 @@ func SearchThreads(w http.ResponseWriter, r *http.Request) {
 
 	var threads []models.Thread
 	err := database.DB.Model(&models.Thread{}).
-		Joins("JOIN prompts ON prompts.id = threads.prompt_id").
+		Joins("JOIN prompts ON prompts.id = threads.prompt_id AND prompts.deleted_at IS NULL").
+		Joins("JOIN registries ON registries.id = prompts.registry_id AND registries.deleted_at IS NULL").
 		Where("prompts.title ILIKE ?", "%"+queryParam+"%").
 		Preload("Prompt").
 		Preload("Prompt.User").
