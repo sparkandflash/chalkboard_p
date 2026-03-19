@@ -40,7 +40,7 @@ const Login = ({ onSuccess }) => {
         <div className="flex justify-center items-center h-[calc(100vh-200px)]">
             <Card className="w-full max-w-md bg-card border shadow-md">
                 <CardHeader>
-                    <CardTitle className="text-2xl text-center">Login to GlobalPrompts</CardTitle>
+                    <CardTitle className="text-2xl text-center">Login to The whiteBoard</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">

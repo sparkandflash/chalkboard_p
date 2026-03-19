@@ -52,12 +52,16 @@ export const Header = () => {
                     The whiteBoard
                 </RouterLink>
             </div>
-
+{!isLoggedIn && (
+    <div className="flex items-center justify-center px-6 md:px-10 pt-4 pb-1">
+        </div>
+)
+    }
             {/* Row 2: Left links + search diamond + Right links */}
             <div className="flex items-center justify-between px-2 md:px-2 pb-0 -mb-4">
                 {/* Left nav links */}
                 <nav className="flex items-center gap-2 text-sm font-medium whitespace-nowrap hidden md:flex">
-                    {isLoggedIn ? (
+                    {isLoggedIn && (
                         <>
                             <RouterLink to="/" className="hover:text-primary transition-colors">Home</RouterLink>
                             <span className="text-muted-foreground">•</span>
@@ -67,8 +71,6 @@ export const Header = () => {
                              <span className="text-muted-foreground">•</span>
                             <RouterLink to="/docs" className="hover:text-primary transition-colors">docs</RouterLink>
                         </>
-                    ) : (
-                        <RouterLink to="/login" className="hover:text-primary transition-colors">Login</RouterLink>
                     )}
                 </nav>
 
@@ -77,7 +79,7 @@ export const Header = () => {
 
                 {/* Right nav links */}
                 <nav className="flex items-center gap-2 text-sm font-medium whitespace-nowrap hidden md:flex">
-                    {isLoggedIn ? (
+                    {isLoggedIn && (
                         <>
                             <button className="hover:text-primary transition-colors">Notifications</button>
                             <span className="text-muted-foreground">•</span>
@@ -87,8 +89,6 @@ export const Header = () => {
                             <span className="text-muted-foreground">•</span>
                             <button onClick={handleLogout} className="hover:text-primary transition-colors">logout</button>
                         </>
-                    ) : (
-                        <RouterLink to="/signup" className="hover:text-primary transition-colors">Sign Up</RouterLink>
                     )}
                 </nav>
             </div>
