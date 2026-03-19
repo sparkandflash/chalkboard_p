@@ -163,6 +163,16 @@ func main() {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	})
 
+	// OG embed endpoint — serves static HTML with OG meta tags for bots (Discord, Slack, etc.)
+	// Real browsers are redirected to the SPA's /p/:id
+	mux.HandleFunc("/og/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			middleware.LoggingMiddleware(http.HandlerFunc(handlers.OGEmbed)).ServeHTTP(w, r)
+			return
+		}
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	})
+
 	mux.HandleFunc("/recent-threads", func(w http.ResponseWriter, r *http.Request) {
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if r.Method == http.MethodGet {

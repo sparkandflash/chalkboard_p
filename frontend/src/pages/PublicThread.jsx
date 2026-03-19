@@ -55,7 +55,9 @@ const PublicThread = () => {
     };
 
     const handleShare = () => {
-        navigator.clipboard.writeText(window.location.href);
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+        const shareUrl = `${apiBase}/og/${id}`;
+        navigator.clipboard.writeText(shareUrl);
         toast.success('Link copied to clipboard!');
     };
 
