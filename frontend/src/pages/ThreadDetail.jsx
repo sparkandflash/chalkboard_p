@@ -112,18 +112,18 @@ export const ThreadDetail = () => {
 
     if (isLoading) {
         return (
-            <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-pulse">
-                <aside className="hidden lg:block lg:col-span-3 sticky top-6">
+            <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start animate-pulse">
+                <aside className="hidden md:block md:col-span-3 sticky top-6">
                      <div className="border rounded-lg p-4 h-[300px] bg-card"></div>
                 </aside>
-                <main className="lg:col-span-6 space-y-6">
+                <main className="md:col-span-6 space-y-6">
                     <div className="border bg-card rounded-lg p-5 flex flex-col gap-4">
                         <div className="h-6 bg-muted rounded w-1/3"></div>
                         <div className="h-4 bg-muted rounded w-1/4"></div>
                         <div className="h-32 bg-muted rounded w-full mt-4"></div>
                     </div>
                 </main>
-                <aside className="hidden lg:block lg:col-span-3 sticky top-6">
+                <aside className="hidden md:block md:col-span-3 sticky top-6">
                      <div className="border rounded-lg p-4 h-[200px] bg-card"></div>
                 </aside>
             </div>
@@ -139,14 +139,14 @@ export const ThreadDetail = () => {
     }
 
     return (
-        <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             {/* Left Sidebar: My Registries */}
-            <aside className="hidden lg:block lg:col-span-3 sticky top-6">
+            <aside className="hidden md:block md:col-span-3 sticky top-6">
                 <UserRegistries />
             </aside>
 
             {/* Center Content: Thread Detail */}
-            <main className="lg:col-span-6 space-y-6">
+            <main className="md:col-span-6 space-y-6">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground pb-2 border-b">
                     <Link to="/" className="hover:text-primary transition-colors">Home</Link>
                     <span>/</span>
@@ -265,7 +265,7 @@ export const ThreadDetail = () => {
             </main>
 
             {/* Right Sidebar: Recent Threads */}
-            <aside className="hidden lg:block lg:col-span-3 sticky top-6">
+            <aside className="hidden md:block md:col-span-3 sticky top-6">
                 <RecentThreads />
             </aside>
         </div>

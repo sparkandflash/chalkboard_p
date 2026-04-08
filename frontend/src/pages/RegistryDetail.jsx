@@ -73,8 +73,8 @@ const RegistryDetail = () => {
 
     if (isLoading) {
         return (
-            <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <div className="lg:col-span-9 space-y-8">
+            <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                <div className="md:col-span-9 space-y-8">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div className="w-full">
                             <div className="h-4 w-24 bg-muted animate-pulse mb-6 rounded"></div>
@@ -93,7 +93,7 @@ const RegistryDetail = () => {
                 </div>
                 
                 {/* Right Side Skeleton Space */}
-                <div className="hidden lg:block lg:col-span-3 sticky top-6">
+                <div className="hidden md:block md:col-span-3 sticky top-6">
                 </div>
             </div>
         );
@@ -109,9 +109,9 @@ const RegistryDetail = () => {
     }
 
     return (
-        <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             {/* 80% Left Side (Span 9 columns out of 12) */}
-            <div className="lg:col-span-9 space-y-8">
+            <div className="md:col-span-9 space-y-8">
                 {/* Header Area */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-6">
                     <div className="w-full">
@@ -154,7 +154,7 @@ const RegistryDetail = () => {
                         registry.prompts.map((prompt) => (
                             <Link 
                                 key={prompt.id} 
-                                to={`/thread/${prompt.threadId}`} // Assuming prompt has a threadId, otherwise we might need to fetch it or rely on the backend attaching it. If it doesn't, this link might need adjustment.
+                                to={`/thread/${prompt.threads?.[0]?.id || ''}`}
                                 className="block group transition-transform"
                             >
                                 <div className="border border-border/50 rounded-lg p-5 bg-card hover:bg-muted/10 transition-colors shadow-sm cursor-pointer relative group/card">
@@ -189,7 +189,7 @@ const RegistryDetail = () => {
             </div>
 
             {/* 20% Right Side (Negative Space / Span 3 columns) */}
-            <div className="hidden lg:block lg:col-span-3 sticky top-6">
+            <div className="hidden md:block md:col-span-3 sticky top-6">
                 {/* Intentionally left blank for negative space as requested */}
             </div>
         </div>

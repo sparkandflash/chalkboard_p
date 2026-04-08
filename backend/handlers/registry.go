@@ -52,7 +52,7 @@ func GetUserRegistries(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var registries []models.Registry
-	if result := database.DB.Where("user_id = ?", userID).Preload("Prompts").Find(&registries); result.Error != nil {
+	if result := database.DB.Where("user_id = ?", userID).Preload("Prompts").Preload("Prompts.Threads").Find(&registries); result.Error != nil {
 		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
 		return
 	}

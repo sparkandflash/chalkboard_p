@@ -78,14 +78,14 @@ const Home = () => {
 
     if (isLoading) {
         return (
-            <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
                 {/* Left Sidebar Skeleton */}
-                <div className="hidden lg:block lg:col-span-3">
+                <div className="hidden md:block md:col-span-3">
                     <div className="border rounded-lg p-4 h-[300px] bg-card animate-pulse"></div>
                 </div>
 
                 {/* Main Content Skeleton */}
-                <div className="lg:col-span-6 space-y-6">
+                <div className="md:col-span-6 space-y-6">
                     <div className="flex items-center justify-center gap-4 text-md font-medium text-neutral-500 pb-2 ">
                         <span className="cursor-pointer">Latest discussions</span>
                         <span>|</span>
@@ -103,7 +103,7 @@ const Home = () => {
                 </div>
 
                 {/* Right Sidebar Skeleton */}
-                <div className="hidden lg:block lg:col-span-3">
+                <div className="hidden md:block md:col-span-3">
                     <div className="border rounded-lg p-4 h-[200px] bg-card animate-pulse"></div>
                 </div>
             </div>
@@ -111,14 +111,14 @@ const Home = () => {
     }
 
     return (
-        <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             {/* Left Sidebar: My Registries */}
-            <aside className="hidden lg:block lg:col-span-3 sticky top-6">
+            <aside className="hidden md:block md:col-span-3 sticky top-6">
                 <UserRegistries />
             </aside>
 
             {/* Center Content: Feed */}
-            <main className="lg:col-span-6 space-y-6">
+            <main className="md:col-span-6 space-y-6">
                 {searchQuery ? (
                     <div className="flex items-center justify-between pb-2 border-b">
                         <div className="flex items-center gap-2">
@@ -211,7 +211,7 @@ const Home = () => {
             </main>
 
             {/* Right Sidebar: Recent Threads */}
-            <aside className="hidden lg:block lg:col-span-3 sticky top-6">
+            <aside className="hidden md:block md:col-span-3 sticky top-6">
                 <RecentThreads />
             </aside>
         </div>
