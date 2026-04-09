@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/joho/godotenv"
 	"github.com/rs/cors"
@@ -198,7 +199,29 @@ func main() {
 		AllowCredentials: true,
 	})
 
-	handler := c.Handler(mux)
+	seoMux := http.NewServeMux()
+	seoMux.HandleFunc("/sitemap.xml", func(w http.ResponseWriter, r *http.Request) {
+		middleware.LoggingMiddleware(http.HandlerFunc(handlers.SEOSitemap)).ServeHTTP(w, r)
+	})
+	seoMux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// Ignore favicon etc
+		if r.URL.Path == "/favicon.ico" {
+			http.NotFound(w, r)
+			return
+		}
+		middleware.LoggingMiddleware(http.HandlerFunc(handlers.SEOThreadView)).ServeHTTP(w, r)
+	})
+
+	apiHandler := c.Handler(mux)
+
+	mainHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		host := r.Host
+		if strings.HasPrefix(host, "prompts.chalkboard.cc") {
+			seoMux.ServeHTTP(w, r)
+			return
+		}
+		apiHandler.ServeHTTP(w, r)
+	})
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -206,7 +229,7 @@ func main() {
 	}
 
 	utils.LogInfo("Server starting on :" + port + "...")
-	if err := http.ListenAndServe(":"+port, handler); err != nil {
+	if err := http.ListenAndServe(":"+port, mainHandler); err != nil {
 		utils.LogError("Error starting server", err)
 	}
 }
