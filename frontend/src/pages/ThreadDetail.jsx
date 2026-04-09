@@ -236,8 +236,7 @@ export const ThreadDetail = () => {
                      <button
                          className="text-primary hover:underline"
                          onClick={() => {
-                             const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-                             const publicUrl = `${apiBase}/og/${id}`;
+                             const publicUrl = `${window.location.origin}/og/${id}`;
                              navigator.clipboard.writeText(publicUrl);
                          }}
                      >
