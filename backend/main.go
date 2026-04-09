@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -203,9 +204,17 @@ func main() {
 	seoMux.HandleFunc("/sitemap.xml", func(w http.ResponseWriter, r *http.Request) {
 		middleware.LoggingMiddleware(http.HandlerFunc(handlers.SEOSitemap)).ServeHTTP(w, r)
 	})
+	seoMux.HandleFunc("/robots.xml", func(w http.ResponseWriter, r *http.Request) {
+		// Just in case someone typos it
+		http.Redirect(w, r, "/sitemap.xml", http.StatusMovedPermanently)
+	})
+	seoMux.HandleFunc("/robots.txt", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain")
+		fmt.Fprintf(w, "User-agent: *\nAllow: /\nSitemap: https://prompts.chalkboard.cc/sitemap.xml\n")
+	})
 	seoMux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Ignore favicon etc
-		if r.URL.Path == "/favicon.ico" {
+		if r.URL.Path == "/favicon.ico" || r.URL.Path == "/" {
 			http.NotFound(w, r)
 			return
 		}
