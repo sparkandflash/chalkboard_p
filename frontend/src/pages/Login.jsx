@@ -9,8 +9,8 @@ import api from '../api';
 import { toast } from "sonner"
 
 const Login = ({ onSuccess }) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
+    const [otp, setOtp] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -19,18 +19,21 @@ const Login = ({ onSuccess }) => {
         setIsLoading(true);
 
         try {
-            const res = await api.post('/login', { email, password });
+            const res = await api.post('/login', { username, otp });
             const { token, user } = res.data;
 
             localStorage.setItem('auth_token', token);
-            localStorage.setItem('user_email', user.email);
+            localStorage.setItem('user_username', user.username);
+            // Replace legacy references just in case there are a few left!
+            localStorage.setItem('user_email', user.username);
+
             window.dispatchEvent(new Event('authChange'));
 
             toast.success("Login successful!");
-            if (onSuccess) onSuccess(user.email);
+            if (onSuccess) onSuccess(user.username);
             navigate('/');
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Invalid email or password');
+            toast.error(error.response?.data?.message || 'Invalid username or code');
         } finally {
             setIsLoading(false);
         }
@@ -40,37 +43,46 @@ const Login = ({ onSuccess }) => {
         <div className="flex justify-center items-center h-[calc(100vh-200px)]">
             <Card className="w-full max-w-md bg-card border shadow-md">
                 <CardHeader>
-                    <CardTitle className="text-2xl text-center">Login to The whiteBoard</CardTitle>
+                    <CardTitle className="text-2xl text-center">Secure Login</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor="username">Username</Label>
                             <Input
-                                id="email"
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                id="username"
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder="Your username"
                                 required
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="otp">Authenticator Code (6 Digits)</Label>
                             <Input
-                                id="password"
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                id="otp"
+                                type="text"
+                                inputMode="numeric"
+                                pattern="\d{6}"
+                                maxLength="6"
+                                placeholder="123456"
+                                value={otp}
+                                onChange={(e) => setOtp(e.target.value)}
                                 required
+                                className="font-mono text-center tracking-widest text-lg"
                             />
                         </div>
-                        <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
-                            {isLoading ? 'Logging in...' : 'Login'}
+                        <Button type="submit" className="w-full" size="lg" disabled={isLoading || otp.length !== 6}>
+                            {isLoading ? 'Verifying...' : 'Login'}
                         </Button>
                     </form>
                 </CardContent>
-                <CardFooter className="justify-center">
-                    <p className="text-sm text-muted-foreground">
+                <CardFooter className="justify-center flex-col space-y-2">
+                    <p className="text-sm text-center text-muted-foreground">
+                        We use passwordless TOTP authentication for maximum security.
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-4">
                         Don't have an account? <Link to="/signup" className="text-primary hover:underline">Sign up</Link>
                     </p>
                 </CardFooter>

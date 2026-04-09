@@ -60,7 +60,7 @@ export const Header = () => {
             {/* Row 2: Left links + search diamond + Right links */}
             <div className="flex items-center justify-between px-2 md:px-2 pb-0 -mb-4">
                 {/* Left nav links */}
-                <nav className="flex items-center gap-2 text-sm font-medium whitespace-nowrap hidden md:flex">
+                <nav className="flex items-center gap-2 text-sm font-medium whitespace-nowrap hidden min-[900px]:flex">
                     {isLoggedIn && (
                         <>
                             <RouterLink to="/" className="hover:text-primary transition-colors">Home</RouterLink>
@@ -78,7 +78,7 @@ export const Header = () => {
                 <div />
 
                 {/* Right nav links */}
-                <nav className="flex items-center gap-2 text-sm font-medium whitespace-nowrap hidden md:flex">
+                <nav className="flex items-center gap-2 text-sm font-medium whitespace-nowrap hidden min-[900px]:flex">
                     {isLoggedIn && (
                         <>
                             <button className="hover:text-primary transition-colors">Notifications</button>
