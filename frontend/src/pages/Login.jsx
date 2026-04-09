@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "@/components/ui/card"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api';
 
@@ -40,7 +41,15 @@ const Login = ({ onSuccess }) => {
     };
 
     return (
-        <div className="flex justify-center items-center h-[calc(100vh-200px)]">
+        <div className="flex justify-center flex-col items-center h-[calc(100vh-100px)] space-y-6">
+            <div className="w-full max-w-md">
+                <Alert className="mb-4 bg-primary/10 border-primary/20 text-primary">
+                    <AlertTitle className="font-semibold">Existing Users</AlertTitle>
+                    <AlertDescription>
+                        existing users can get their 32-char totp key from our <a href="https://discord.gg/7ZFqE8Ne" target="_blank" rel="noopener noreferrer" className="underline font-medium hover:text-primary/80">Discord server</a>.
+                    </AlertDescription>
+                </Alert>
+            </div>
             <Card className="w-full max-w-md bg-card border shadow-md">
                 <CardHeader>
                     <CardTitle className="text-2xl text-center">Secure Login</CardTitle>
