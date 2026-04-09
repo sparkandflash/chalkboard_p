@@ -10,23 +10,23 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"golang.org/x/crypto/bcrypt"
+	"github.com/pquerna/otp/totp"
 )
 
 type SignupRequest struct {
 	Username string `json:"username"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
 }
 
 type LoginRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Username string `json:"username"`
+	OTP      string `json:"otp"`
 }
 
 type AuthResponse struct {
-	Token string      `json:"token"`
-	User  models.User `json:"user"`
+	Token      string      `json:"token,omitempty"`
+	User       models.User `json:"user,omitempty"`
+	TOTPSecret string      `json:"totpSecret,omitempty"`
+	OTPAuthURL string      `json:"otpAuthUrl,omitempty"`
 }
 
 func Signup(w http.ResponseWriter, r *http.Request) {
@@ -37,37 +37,35 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Hash password
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	// Generate TOTP Secret
+	key, err := totp.Generate(totp.GenerateOpts{
+		Issuer:      "globalPrompt",
+		AccountName: req.Username,
+	})
 	if err != nil {
-		utils.LogError("Error hashing password", err)
+		utils.LogError("Error generating TOTP secret", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
 	user := models.User{
-		Username: req.Username,
-		Email:    req.Email,
-		Password: string(hashedPassword),
-		Role:     "default", // Default role
+		Username:   req.Username,
+		TOTPSecret: key.Secret(),
+		Role:       "default", // Default role
 	}
 
 	if result := database.DB.Create(&user); result.Error != nil {
 		utils.LogError("Error creating user", result.Error)
-		http.Error(w, "Error creating user (email/username might be taken)", http.StatusConflict)
+		http.Error(w, "Error creating user (username might be taken)", http.StatusConflict)
 		return
 	}
 
-	// Generate JWT
-	tokenString, err := generateJWT(user)
-	if err != nil {
-		utils.LogError("Error generating JWT", err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
-
+	// We don't log them in directly or maybe we do, but here we just return the secret for setup
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(AuthResponse{Token: tokenString, User: user})
+	json.NewEncoder(w).Encode(AuthResponse{
+		TOTPSecret: key.Secret(),
+		OTPAuthURL: key.URL(), // Useful for QR code generation on the frontend
+	})
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -79,16 +77,17 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var user models.User
-	if result := database.DB.Where("email = ?", req.Email).First(&user); result.Error != nil {
+	if result := database.DB.Where("username = ?", req.Username).First(&user); result.Error != nil {
 		utils.LogError("User not found or database error", result.Error)
-		http.Error(w, "Invalid email or password", http.StatusUnauthorized)
+		http.Error(w, "Invalid username or OTP", http.StatusUnauthorized)
 		return
 	}
 
-	// Verify password
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
-		utils.LogError("Invalid password", err)
-		http.Error(w, "Invalid email or password", http.StatusUnauthorized)
+	// Verify TOTP code
+	valid := totp.Validate(req.OTP, user.TOTPSecret)
+	if !valid {
+		utils.LogError("Invalid OTP code", nil)
+		http.Error(w, "Invalid username or OTP", http.StatusUnauthorized)
 		return
 	}
 
