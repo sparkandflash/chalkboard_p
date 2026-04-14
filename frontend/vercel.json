@@ -1,7 +1,7 @@
 {
   "rewrites": [
-    { "source": "/og/:id", "destination": "https://globalprompt-production.up.railway.app/og/:id" },
-    { "source": "/api/:path*", "destination": "https://globalprompt-production.up.railway.app/:path*" },
+    { "source": "/og/:id", "destination": "https://thechalkboard-969o.onrender.com/og/:id" },
+    { "source": "/api/:path*", "destination": "https://thechalkboard-969o.onrender.com/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
