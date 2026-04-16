@@ -34,13 +34,14 @@ export const Footer = () => {
                  <span className="text-muted-foreground">•</span>
                 {isLoggedIn && (
                     <>
-                        <button onClick={handleLogout} className="text-sm font-medium hover:underline underline-offset-4">logout</button>
+                        <button onClick={handleLogout} className="text-sm font-medium hover:underline underline-offset-4">Logout</button>
                         <span className="text-muted-foreground">•</span>
+                        <Link to="/settings" className="text-sm font-medium hover:underline underline-offset-4">Settings</Link>
+                          <span className="text-muted-foreground">•</span>
                     </>
                 )}
-                <Link to="/settings" className="text-sm font-medium hover:underline underline-offset-4">settings</Link>
-                <span className="text-muted-foreground">•</span>
-                <Link to="/docs" className="text-sm font-medium hover:underline underline-offset-4">docs</Link>
+              
+                <Link to="/docs" className="text-sm font-medium hover:underline underline-offset-4">Docs</Link>
             </div>
 
             {/* Mobile Footer (< 900px) */}

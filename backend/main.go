@@ -33,8 +33,10 @@ func main() {
 	// Connect to Database
 	database.Connect()
 	// Auto Migrate
-	database.DB.AutoMigrate(&models.User{}, &models.Registry{}, &models.Prompt{}, &models.Thread{}, &models.Comment{})
-
+	database.DB.AutoMigrate(&models.User{}, &models.Registry{}, &models.Prompt{}, &models.Thread{}, &models.Comment{}, &models.Notification{})
+	
+	// Start Background Jobs
+	utils.StartNotificationPurgeJob()
 	mux := http.NewServeMux()
 
 	// Auth Handlers
@@ -104,6 +106,30 @@ func main() {
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if r.Method == http.MethodGet {
 				handlers.GetThreads(w, r)
+				return
+			}
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		})
+		middleware.LoggingMiddleware(middleware.AuthMiddleware(handler)).ServeHTTP(w, r)
+	})
+
+	// Notification Handlers
+	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.Method == http.MethodGet {
+				handlers.GetNotifications(w, r)
+				return
+			}
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		})
+		middleware.LoggingMiddleware(middleware.AuthMiddleware(handler)).ServeHTTP(w, r)
+	})
+
+	mux.HandleFunc("/notifications/", func(w http.ResponseWriter, r *http.Request) {
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			pathLen := len(r.URL.Path)
+			if r.Method == http.MethodPut && pathLen > 5 && r.URL.Path[pathLen-5:] == "/read" {
+				handlers.MarkNotificationRead(w, r)
 				return
 			}
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

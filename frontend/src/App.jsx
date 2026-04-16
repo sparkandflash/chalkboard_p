@@ -13,6 +13,10 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import PublicThread from './pages/PublicThread'
 import PublicSearch from './pages/PublicSearch'
+import Docs from './pages/Docs'
+import Profile from './pages/Profile'
+import Settings from './pages/Settings'
+import Notifications from './pages/Notifications'
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -63,8 +67,26 @@ function App() {
                   <CreatePrompt />
                 </ProtectedRoute>
               } />
+              
+              {/* New Authenticated Routes */}
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              } />
+              <Route path="/settings" element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              } />
+              <Route path="/notifications" element={
+                <ProtectedRoute>
+                  <Notifications />
+                </ProtectedRoute>
+              } />
 
               {/* Public routes — no auth required */}
+              <Route path="/docs" element={<Docs />} />
               <Route path="/p/:id" element={<PublicThread />} />
               <Route path="/search" element={<PublicSearch />} />
             </Routes>

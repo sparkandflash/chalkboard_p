@@ -20,7 +20,7 @@ export const ThreadDetail = () => {
     // Dummy comments for testing UI
     const [comments, setComments] = useState([]);
 
-    const currentUserEmail = localStorage.getItem('user_email');
+    const currentUsername = localStorage.getItem('username');
     
     useEffect(() => {
         const fetchThreadDetail = async () => {
@@ -36,7 +36,7 @@ export const ThreadDetail = () => {
                 
                 // Initialize dummy follow state based on real followers if available
                 const followers = res.data.followers || [];
-                const isUserFollowing = followers.some(f => f.email === currentUserEmail);
+                const isUserFollowing = followers.some(f => f.username === currentUsername);
                 setIsFollowing(isUserFollowing);
 
             } catch (err) {
@@ -50,10 +50,10 @@ export const ThreadDetail = () => {
         if (id) {
             fetchThreadDetail();
         }
-    }, [id, currentUserEmail]);
+    }, [id, currentUsername]);
 
     // Derived state
-    const isAuthor = thread?.user?.email === currentUserEmail;
+    const isAuthor = thread?.user?.username === currentUsername;
 
     // Dummy Handlers
     const handleFollowToggle = async () => {

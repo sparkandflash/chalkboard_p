@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { Search } from "lucide-react"
+import api from '../../api'
 
 export const Header = () => {
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('auth_token'));
+    const [unreadCount, setUnreadCount] = useState(0);
 
     const handleLogout = () => {
         localStorage.removeItem('auth_token');
-        localStorage.removeItem('user_email');
+        localStorage.removeItem('username');
         window.dispatchEvent(new Event('authChange'));
         setIsLoggedIn(false);
         navigate('/login');
@@ -26,6 +28,20 @@ export const Header = () => {
             window.removeEventListener('authChange', checkAuth);
         };
     }, []);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            api.get('/notifications')
+                .then(res => {
+                    if (res.data) {
+                        setUnreadCount(res.data.filter(n => !n.read).length);
+                    }
+                })
+                .catch(err => console.error('Failed to grab unread notifications count:', err));
+        } else {
+            setUnreadCount(0);
+        }
+    }, [isLoggedIn]);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -63,13 +79,13 @@ export const Header = () => {
                 <nav className="flex items-center gap-2 text-sm font-medium whitespace-nowrap hidden min-[900px]:flex">
                     {isLoggedIn && (
                         <>
+                            <RouterLink to="/docs" className="hover:text-primary transition-colors">Docs</RouterLink>
+                            <span className="text-muted-foreground">•</span>
                             <RouterLink to="/" className="hover:text-primary transition-colors">Home</RouterLink>
                             <span className="text-muted-foreground">•</span>
                             <RouterLink to="/create-registry" className="hover:text-primary transition-colors">New Registry</RouterLink>
                             <span className="text-muted-foreground">•</span>
                             <RouterLink to="/create-prompt" className="hover:text-primary transition-colors">New prompt</RouterLink>
-                             <span className="text-muted-foreground">•</span>
-                            <RouterLink to="/docs" className="hover:text-primary transition-colors">docs</RouterLink>
                         </>
                     )}
                 </nav>
@@ -81,13 +97,15 @@ export const Header = () => {
                 <nav className="flex items-center gap-2 text-sm font-medium whitespace-nowrap hidden min-[900px]:flex">
                     {isLoggedIn && (
                         <>
-                            <button className="hover:text-primary transition-colors">Notifications</button>
+                            <RouterLink to="/notifications" className="hover:text-primary transition-colors">
+                                Notifications{unreadCount > 0 ? `(${unreadCount})` : ''}
+                            </RouterLink>
                             <span className="text-muted-foreground">•</span>
                             <RouterLink to="/profile" className="hover:text-primary transition-colors">Profile</RouterLink>
                             <span className="text-muted-foreground">•</span>
                             <RouterLink to="/settings" className="hover:text-primary transition-colors">Settings</RouterLink>
                             <span className="text-muted-foreground">•</span>
-                            <button onClick={handleLogout} className="hover:text-primary transition-colors">logout</button>
+                            <button onClick={handleLogout} className="hover:text-primary transition-colors">Logout</button>
                         </>
                     )}
                 </nav>

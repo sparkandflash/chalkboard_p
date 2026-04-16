@@ -9,6 +9,7 @@ import (
 	"backend/database"
 	"backend/middleware"
 	"backend/models"
+	"backend/utils"
 )
 
 func GetThreads(w http.ResponseWriter, r *http.Request) {
@@ -273,6 +274,13 @@ func ToggleFollowThread(w http.ResponseWriter, r *http.Request) {
 	} else {
 		// Follow
 		err = database.DB.Model(&thread).Association("Followers").Append(&user)
+		if err == nil && thread.UserID != userId {
+			username := user.Username
+			if username == "" {
+				username = "Someone"
+			}
+			go utils.CreateNotification(thread.UserID, "follow", username+" followed your thread.")
+		}
 	}
 
 	if err != nil {
@@ -331,6 +339,14 @@ func CreateComment(w http.ResponseWriter, r *http.Request) {
 
 	// Fetch with User preloaded to return full info
 	database.DB.Preload("User").First(&comment, comment.ID)
+
+	if thread.UserID != userId {
+		username := comment.User.Username
+		if username == "" {
+			username = "Someone"
+		}
+		go utils.CreateNotification(thread.UserID, "reply", username+" replied to your thread.")
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)

@@ -18,4 +18,23 @@ api.interceptors.request.use(
     }
 );
 
+// Response interceptor to handle global errors (like expired tokens)
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            // Token expired or invalid, log out the user
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('username');
+            window.dispatchEvent(new Event('authChange'));
+            
+            // Redirect to login if not already there
+            if (window.location.pathname !== '/login') {
+                window.location.href = '/login';
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default api;

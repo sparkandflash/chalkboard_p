@@ -26,7 +26,7 @@ const Login = ({ onSuccess }) => {
             localStorage.setItem('auth_token', token);
             localStorage.setItem('user_username', user.username);
             // Replace legacy references just in case there are a few left!
-            localStorage.setItem('user_email', user.username);
+            localStorage.setItem('username', user.username);
 
             window.dispatchEvent(new Event('authChange'));
 
@@ -42,14 +42,6 @@ const Login = ({ onSuccess }) => {
 
     return (
         <div className="flex justify-center flex-col items-center h-[calc(100vh-100px)] space-y-6">
-            <div className="w-full max-w-md">
-                <Alert className="mb-4 bg-primary/10 border-primary/20 text-primary">
-                    <AlertTitle className="font-semibold">Existing Users</AlertTitle>
-                    <AlertDescription>
-                        existing users can get their 32-char totp key from our <a href="https://discord.gg/7ZFqE8Ne" target="_blank" rel="noopener noreferrer" className="underline font-medium hover:text-primary/80">Discord server</a>.
-                    </AlertDescription>
-                </Alert>
-            </div>
             <Card className="w-full max-w-md bg-card border shadow-md">
                 <CardHeader>
                     <CardTitle className="text-2xl text-center">Secure Login</CardTitle>
