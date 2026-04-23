@@ -122,8 +122,6 @@ const Home = () => {
 
                             <div className="flex items-center gap-2 text-neutral-500 text-sm pt-2">
                                 <span>Total Replies <span className="text-foreground font-medium">{thread.comments?.length || 0}</span></span>
-                                <span>•</span>
-                                <span>Followed by <span className="text-foreground font-medium">{thread.followers?.length || 0}</span></span>
                             </div>
                         </div>
                     </Link>

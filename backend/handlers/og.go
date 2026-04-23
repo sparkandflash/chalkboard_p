@@ -10,24 +10,8 @@ import (
 
 	"backend/database"
 	"backend/models"
+	"backend/utils"
 )
-
-// botUserAgents contains substrings that identify social media crawlers
-var botUserAgents = []string{
-	"discordbot", "twitterbot", "facebookexternalhit", "slackbot",
-	"linkedinbot", "whatsapp", "telegrambot", "iframely", "embedly",
-	"pinterest", "vkshare", "w3c_validator",
-}
-
-func isBot(r *http.Request) bool {
-	ua := strings.ToLower(r.Header.Get("User-Agent"))
-	for _, bot := range botUserAgents {
-		if strings.Contains(ua, bot) {
-			return true
-		}
-	}
-	return false
-}
 
 func OGEmbed(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
@@ -49,12 +33,12 @@ func OGEmbed(w http.ResponseWriter, r *http.Request) {
 	spaURL := fmt.Sprintf("%s/p/%d", frontendURL, id)
 
 	// Real browsers: just redirect to the SPA
-	if !isBot(r) {
+	if !utils.IsBot(r) {
 		http.Redirect(w, r, spaURL, http.StatusFound)
 		return
 	}
 
-	// Bots: fetch thread data and serve static HTML with OG tags
+	// Bots & AI Agents: fetch thread data and serve static HTML with OG tags + full content
 	var thread models.Thread
 	err = database.DB.Preload("Prompt").Preload("Prompt.Registry").Preload("User").First(&thread, id).Error
 	if err != nil {
@@ -68,7 +52,8 @@ func OGEmbed(w http.ResponseWriter, r *http.Request) {
 	}
 	ogTitle := html.EscapeString(title + " — globalPrompt")
 
-	description := thread.Prompt.Content
+	content := thread.Prompt.Content
+	description := content
 	if len(description) > 200 {
 		description = description[:200] + "..."
 	}
@@ -79,7 +64,8 @@ func OGEmbed(w http.ResponseWriter, r *http.Request) {
 		author = "Anonymous"
 	}
 
-	// Serve minimal HTML page with full OG + Twitter card meta tags
+	// Serve HTML page with full OG + Twitter card meta tags
+	// For bots, we also include the full prompt content in a <pre> tag so they can "read" it.
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	fmt.Fprintf(w, `<!DOCTYPE html>
 <html>
@@ -96,15 +82,25 @@ func OGEmbed(w http.ResponseWriter, r *http.Request) {
   <meta name="twitter:description" content="%s" />
   <meta name="author" content="%s" />
   <meta http-equiv="refresh" content="0; url=%s" />
+  <style>
+    body { font-family: sans-serif; line-height: 1.5; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+    pre { background: #f4f4f4; padding: 1rem; border-radius: 4px; white-space: pre-wrap; }
+  </style>
 </head>
 <body>
-  <p>Redirecting to <a href="%s">%s</a>...</p>
+  <h1>%s</h1>
+  <p>By <strong>%s</strong></p>
+  <hr />
+  <pre>%s</pre>
+  <hr />
+  <p>Redirecting to <a href="%s">interactive view</a>...</p>
 </body>
 </html>`,
 		ogTitle,
 		ogTitle, ogDescription, spaURL,
 		ogTitle, ogDescription,
 		html.EscapeString(author),
-		spaURL, spaURL, ogTitle,
+		spaURL,
+		ogTitle, html.EscapeString(author), html.EscapeString(content), spaURL,
 	)
 }

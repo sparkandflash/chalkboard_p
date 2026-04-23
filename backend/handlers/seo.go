@@ -5,29 +5,14 @@ import (
 	"html"
 	"html/template"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
 	"backend/database"
 	"backend/models"
+	"backend/utils"
 )
-
-var seoBotUserAgents = []string{
-	"googlebot", "bingbot", "yandexbot", "duckduckbot", "baiduspider", "applebot",
-	"discordbot", "twitterbot", "facebookexternalhit", "slackbot",
-	"linkedinbot", "whatsapp", "telegrambot", "iframely", "embedly",
-	"pinterest", "vkshare", "w3c_validator",
-}
-
-func isSEOBot(r *http.Request) bool {
-	ua := strings.ToLower(r.Header.Get("User-Agent"))
-	for _, bot := range seoBotUserAgents {
-		if strings.Contains(ua, bot) {
-			return true
-		}
-	}
-	return false
-}
 
 type SEOPageData struct {
 	Title       string
@@ -53,10 +38,14 @@ func SEOThreadView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	appURL := fmt.Sprintf("https://chalkboard.cc/p/%d", id)
+	frontendURL := os.Getenv("FRONTEND_URL")
+	if frontendURL == "" {
+		frontendURL = "https://chalkboard.cc"
+	}
+	appURL := fmt.Sprintf("%s/p/%d", frontendURL, id)
 
 	// If human, redirect immediately to the interactive app
-	if !isSEOBot(r) {
+	if !utils.IsBot(r) {
 		http.Redirect(w, r, appURL, http.StatusFound)
 		return
 	}

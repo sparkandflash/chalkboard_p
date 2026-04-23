@@ -13,6 +13,7 @@ type Registry struct {
 	Name        string         `json:"name" gorm:"not null"`
 	Description string         `json:"description"`
 	Prompts     []Prompt       `json:"prompts" gorm:"foreignKey:RegistryID"`
+	Followers   []User         `json:"followers" gorm:"many2many:registry_followers;"`
 	CreatedAt   time.Time      `json:"createdAt"`
 	UpdatedAt   time.Time      `json:"updatedAt"`
 	DeletedAt   gorm.DeletedAt `json:"deletedAt" gorm:"index"`

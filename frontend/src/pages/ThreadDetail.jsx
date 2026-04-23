@@ -4,6 +4,8 @@ import { UserRegistries } from '../components/dashboard/UserRegistries';
 import { RecentThreads } from '../components/dashboard/RecentThreads';
 import api from '../api';
 import { Button } from "@/components/ui/button"
+import { toast } from 'sonner';
+
 
 export const ThreadDetail = () => {
     const { id } = useParams();
@@ -11,13 +13,10 @@ export const ThreadDetail = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // States for interaction
     const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState('');
-    const [isFollowing, setIsFollowing] = useState(false);
     const [commentText, setCommentText] = useState('');
 
-    // Dummy comments for testing UI
     const [comments, setComments] = useState([]);
 
     const currentUsername = localStorage.getItem('username');
@@ -26,19 +25,10 @@ export const ThreadDetail = () => {
         const fetchThreadDetail = async () => {
             setIsLoading(true);
             try {
-                // Fetch real thread data
                 const res = await api.get(`/threads/${id}`);
                 setThread(res.data);
                 setEditContent(res.data.prompt?.content || '');
-                
-                // Set comments to real data or empty array
                 setComments(res.data.comments || []);
-                
-                // Initialize dummy follow state based on real followers if available
-                const followers = res.data.followers || [];
-                const isUserFollowing = followers.some(f => f.username === currentUsername);
-                setIsFollowing(isUserFollowing);
-
             } catch (err) {
                 console.error("Failed to fetch thread details", err);
                 setError(err.response?.data?.message || err.message || "Failed to load thread");
@@ -50,30 +40,11 @@ export const ThreadDetail = () => {
         if (id) {
             fetchThreadDetail();
         }
-    }, [id, currentUsername]);
+    }, [id]);
+
 
     // Derived state
     const isAuthor = thread?.user?.username === currentUsername;
-
-    // Dummy Handlers
-    const handleFollowToggle = async () => {
-        try {
-            // Optimistic update
-            setIsFollowing(!isFollowing);
-            
-            // Backend call
-            const res = await api.post(`/threads/${id}/follow`);
-            
-            // Sync with actual response in case it failed/differs
-            if (res.data && typeof res.data.isFollowing === 'boolean') {
-                setIsFollowing(res.data.isFollowing);
-            }
-        } catch (err) {
-            console.error("Failed to toggle follow status", err);
-            // Revert optimistic update on failure
-            setIsFollowing(!isFollowing);
-        }
-    };
 
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
@@ -188,31 +159,21 @@ export const ThreadDetail = () => {
                                 {thread.prompt?.content || <span className="text-muted-foreground italic">No content provided</span>}
                             </div>
                             
-                            {/* Actions / Edit Toggle */}
+                            {/* Actions */}
                             <div className="flex flex-col sm:flex-row items-center justify-between border-t pt-4 gap-4">
-                                {/* Left Side: Follow & Comment */}
-                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-                                    <Button 
-                                        variant={isFollowing ? "secondary" : "outline"} 
-                                        onClick={handleFollowToggle}
-                                        className="shrink-0"
-                                        disabled={isAuthor} // Disable follow for author
-                                    >
-                                        {isFollowing ? 'Following' : 'Follow'}
-                                    </Button>
-                                    <form onSubmit={handleCommentSubmit} className="flex flex-1 sm:w-[400px] gap-2">
-                                        <input 
-                                            type="text" 
-                                            value={commentText}
-                                            onChange={(e) => setCommentText(e.target.value)}
-                                            placeholder="Add a comment..."
-                                            className="flex-1 px-3 py-2 text-sm bg-background border rounded-md focus:outline-none focus:ring-1 focus:ring-primary/30"
-                                        />
-                                        <Button type="submit" variant="default" className="shrink-0">Comment</Button>
-                                    </form>
-                                 </div>
+                                {/* Comment form */}
+                                <form onSubmit={handleCommentSubmit} className="flex flex-1 w-full sm:w-[400px] gap-2">
+                                    <input 
+                                        type="text" 
+                                        value={commentText}
+                                        onChange={(e) => setCommentText(e.target.value)}
+                                        placeholder="Add a comment..."
+                                        className="flex-1 px-3 py-2 text-sm bg-background border rounded-md focus:outline-none focus:ring-1 focus:ring-primary/30"
+                                    />
+                                    <Button type="submit" variant="default" className="shrink-0">Comment</Button>
+                                </form>
                                 
-                                {/* Right Side: Edit Thread (Author Only) */}
+                                {/* Edit Thread (Author Only) */}
                                 {isAuthor && (
                                     <Button variant="secondary" onClick={() => setIsEditing(true)}>
                                         Edit Thread
@@ -227,8 +188,6 @@ export const ThreadDetail = () => {
                 <div className="flex items-center gap-2 text-neutral-500 text-sm pt-2 pb-4 border-b">
                      <span>Total Replies <span className="text-foreground font-medium">{comments.length}</span></span>
                      <span>•</span>
-                     <span>Followed by <span className="text-foreground font-medium">{isFollowing ? (thread.followers?.length || 0) + 1 : (thread.followers?.length || 0)}</span></span>
-                     <span>•</span>
                      <span><span className="text-foreground font-medium">{thread.prompt?.content?.length || 0}</span> chars</span>
                      <span>•</span>
                      <span>~<span className="text-foreground font-medium">{Math.ceil((thread.prompt?.content?.length || 0) / 4)}</span> tokens</span>
@@ -238,6 +197,7 @@ export const ThreadDetail = () => {
                          onClick={() => {
                              const publicUrl = `${window.location.origin}/og/${id}`;
                              navigator.clipboard.writeText(publicUrl);
+                             toast.success('Link copied to clipboard!');
                          }}
                      >
                          Share

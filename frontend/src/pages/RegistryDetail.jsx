@@ -12,6 +12,9 @@ const RegistryDetail = () => {
     const [registry, setRegistry] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isManaging, setIsManaging] = useState(false);
+    const [isFollowing, setIsFollowing] = useState(false);
+
+    const currentUsername = localStorage.getItem('username');
 
     useEffect(() => {
         const fetchRegistry = async () => {
@@ -21,7 +24,6 @@ const RegistryDetail = () => {
 
                 // Since we don't have a direct /registries/:id endpoint, 
                 // we fetch all and find the one (temporary solution for V1).
-                // Ideally backend should support GET /registries/:id
                 const res = await api.get('/registries');
                 const found = res.data.find(r => r.id === parseInt(id));
 
@@ -29,6 +31,11 @@ const RegistryDetail = () => {
                     toast.error("Registry not found");
                 }
                 setRegistry(found);
+
+                // Check if the current user is already following
+                if (found?.followers) {
+                    setIsFollowing(found.followers.some(f => f.username === currentUsername));
+                }
             } catch (error) {
                 console.error("Failed to fetch registry", error);
                 toast.error("Failed to load registry details");
@@ -38,7 +45,26 @@ const RegistryDetail = () => {
         };
 
         fetchRegistry();
-    }, [id]);
+    }, [id, currentUsername]);
+
+    const isOwner = registry?.userId === undefined
+        ? false
+        : registry?.user?.username === currentUsername;
+
+    const handleFollowToggle = async () => {
+        try {
+            setIsFollowing(prev => !prev); // optimistic
+            const res = await api.post(`/registries/${id}/follow`);
+            if (res.data && typeof res.data.isFollowing === 'boolean') {
+                setIsFollowing(res.data.isFollowing);
+            }
+            toast.success(isFollowing ? 'Unfollowed registry' : 'Following registry!');
+        } catch (error) {
+            console.error("Failed to toggle follow", error);
+            setIsFollowing(prev => !prev); // revert
+            toast.error("Failed to update follow status");
+        }
+    };
 
     const handleDeleteRegistry = async () => {
         if (!window.confirm("Are you sure you want to delete this registry? This action cannot be undone.")) return;
@@ -130,19 +156,34 @@ const RegistryDetail = () => {
                                         Delete Registry
                                     </button>
                                 )}
-                                <button 
-                                    className="text-sm font-medium text-foreground hover:underline"
-                                    onClick={() => setIsManaging(!isManaging)}
-                                >
-                                    {isManaging ? "Done" : "Manage"}
-                                </button>
+                                {isOwner && (
+                                    <button 
+                                        className="text-sm font-medium text-foreground hover:underline"
+                                        onClick={() => setIsManaging(!isManaging)}
+                                    >
+                                        {isManaging ? "Done" : "Manage"}
+                                    </button>
+                                )}
                             </div>
-                            <Link 
-                                to={`/create-prompt?registryId=${registry.id}`} 
-                                className={`text-sm font-medium text-primary hover:underline ${isManaging ? 'opacity-50 pointer-events-none' : ''}`}
-                            >
-                                Add Prompt
-                            </Link>
+                            <div className="flex items-center gap-3">
+                                {/* Follow button — only shown to non-owners */}
+                                {!isOwner && (
+                                    <Button
+                                        variant={isFollowing ? "secondary" : "outline"}
+                                        onClick={handleFollowToggle}
+                                    >
+                                        {isFollowing ? 'Following' : 'Follow'}
+                                    </Button>
+                                )}
+                                {isOwner && (
+                                    <Link 
+                                        to={`/create-prompt?registryId=${registry.id}`} 
+                                        className={`text-sm font-medium text-primary hover:underline ${isManaging ? 'opacity-50 pointer-events-none' : ''}`}
+                                    >
+                                        Add Prompt
+                                    </Link>
+                                )}
+                            </div>
                         </div>
                         <p className="text-muted-foreground mt-2">{registry.description}</p>
                     </div>
@@ -180,9 +221,11 @@ const RegistryDetail = () => {
                     ) : (
                         <div className="text-center py-12 bg-muted/5 rounded-lg border border-dashed">
                             <p className="text-muted-foreground mb-4">No prompts in this registry yet.</p>
-                            <Link to={`/create-prompt?registryId=${registry.id}`} className="text-sm font-medium text-primary hover:underline">
-                                Create your first prompt
-                            </Link>
+                            {isOwner && (
+                                <Link to={`/create-prompt?registryId=${registry.id}`} className="text-sm font-medium text-primary hover:underline">
+                                    Create your first prompt
+                                </Link>
+                            )}
                         </div>
                     )}
                 </div>

@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"backend/database"
 	"backend/middleware"
@@ -124,4 +125,62 @@ func DeleteRegistry(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Registry deleted successfully"})
+}
+
+func ToggleFollowRegistry(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	userId, ok := r.Context().Value(middleware.UserIDKey).(uint)
+	if !ok || userId == 0 {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	idStr := r.URL.Path[len("/registries/") : len(r.URL.Path)-len("/follow")]
+	registryId, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid registry ID", http.StatusBadRequest)
+		return
+	}
+
+	var registry models.Registry
+	if err := database.DB.Preload("Followers").First(&registry, registryId).Error; err != nil {
+		http.Error(w, "Registry not found", http.StatusNotFound)
+		return
+	}
+
+	var user models.User
+	if err := database.DB.First(&user, userId).Error; err != nil {
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
+
+	// Check if already following
+	var isFollowing bool
+	for _, f := range registry.Followers {
+		if f.ID == userId {
+			isFollowing = true
+			break
+		}
+	}
+
+	if isFollowing {
+		// Unfollow
+		err = database.DB.Model(&registry).Association("Followers").Delete(&user)
+	} else {
+		// Follow
+		err = database.DB.Model(&registry).Association("Followers").Append(&user)
+		// We could send a notification to the registry owner if we wanted!
+	}
+
+	if err != nil {
+		http.Error(w, "Failed to toggle follow status", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]bool{"isFollowing": !isFollowing})
 }

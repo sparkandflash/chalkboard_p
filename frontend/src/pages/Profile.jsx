@@ -1,17 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
+import api from '../api';
 
 const Profile = () => {
-    // Mock user statistics
-    const stats = {
-        username: localStorage.getItem('user_email') || 'User', // Falling back to email/username stored locally
-        accountAge: '6 Months',
-        followers: 124,
-        following: 89,
-        promptsCreated: 15,
-        registriesCreated: 3,
-        registriesFollowed: 12
-    };
+    const [stats, setStats] = useState({
+        username: localStorage.getItem('username') || 'User',
+        accountAge: '...',
+        followers: 0,
+        following: 0,
+        promptsCreated: 0,
+        registriesCreated: 0,
+        registriesFollowed: 0
+    });
+
+    useEffect(() => {
+        const fetchMetrics = async () => {
+            try {
+                const res = await api.get('/profile/metrics');
+                if (res.data) {
+                    setStats(res.data);
+                }
+            } catch (err) {
+                console.error("Failed to fetch profile metrics:", err);
+            }
+        };
+        fetchMetrics();
+    }, []);
 
     return (
         <DashboardLayout>
@@ -24,16 +38,6 @@ const Profile = () => {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                    <div className="flex flex-col gap-1 p-4 bg-muted/30 rounded-lg border border-transparent hover:border-border transition-colors">
-                        <span className="text-sm text-muted-foreground font-medium uppercase tracking-wider">Followers</span>
-                        <span className="text-3xl font-extrabold">{stats.followers}</span>
-                    </div>
-                    
-                    <div className="flex flex-col gap-1 p-4 bg-muted/30 rounded-lg border border-transparent hover:border-border transition-colors">
-                        <span className="text-sm text-muted-foreground font-medium uppercase tracking-wider">Following</span>
-                        <span className="text-3xl font-extrabold">{stats.following}</span>
-                    </div>
-
                     <div className="flex flex-col gap-1 p-4 bg-muted/30 rounded-lg border border-transparent hover:border-border transition-colors">
                         <span className="text-sm text-muted-foreground font-medium uppercase tracking-wider">Prompts</span>
                         <span className="text-3xl font-extrabold">{stats.promptsCreated}</span>
